@@ -1,5 +1,32 @@
 # React + TypeScript + Vite
 
+## Getting Started
+
+First, navigate to project:
+
+```bash
+cd new-scramble
+
+```
+
+then install dependencies
+
+```bash
+npm install
+
+```
+
+create a .env file and paste the api url provided.
+
+
+then run the project
+
+```bash
+npm run dev
+
+```
+
+
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
 Currently, two official plugins are available:
