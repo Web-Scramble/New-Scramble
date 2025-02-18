@@ -14,7 +14,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import Header from "@/components/features/auth/header";
-import { signupSchema } from "@/schema/signup_schema";
+import { signupSchema } from "@/schema/auth_schemas";
 
 type SignupFormValues = {
   Phone: string;
@@ -29,6 +29,10 @@ export default function Signup() {
       Phone: "",
     },
   });
+
+  const handleNavigate = ()=>{
+    navigate("verify_otp")
+  }
 
   async function onSubmit(values: SignupFormValues) {
     try {
@@ -126,7 +130,7 @@ export default function Signup() {
               </CardContent>
 
               <CardFooter className="flex flex-col space-y-4">
-                <Button type="submit" className="w-full bg-primary">
+                <Button type="submit" className="w-full bg-primary" onClick={handleNavigate}>
                   Continue
                 </Button>
 
