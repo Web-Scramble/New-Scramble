@@ -9,7 +9,7 @@ const Header = ({ headerLabel, bodyLabel }: HeaderProps) => {
   return (
     <div>
       <CardHeader>
-        <CardTitle className="font-inter" >{headerLabel}</CardTitle>
+        <CardTitle className="font-grotesk text-3xl" >{headerLabel}</CardTitle>
 
         <CardDescription className="font-inter">{bodyLabel}</CardDescription>
       </CardHeader>

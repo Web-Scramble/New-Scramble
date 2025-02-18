@@ -2,11 +2,7 @@ import { Link, useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { supabase } from "@/services/supabase";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-} from "@/components/ui/card";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -52,6 +48,7 @@ export default function Signup() {
         console.log("Sign up successful with phone:", data);
       }
     } catch (error) {
+      navigate("");
       console.error("Sign up error:", error);
     }
   }
@@ -98,25 +95,12 @@ export default function Signup() {
   }
 
   return (
-    <div className="flex h-screen">
-      <div className="hidden w-1/2 flex-col bg-[#F5F7FC] p-8 lg:flex">
-        <Button
-          variant="ghost"
-          className="mb-4 w-fit"
-          onClick={() => navigate(-1)}
-        >
-          ← Back
-        </Button>
-        <div className="mt-auto mb-auto">
-          <h1 className="text-3xl font-bold">Scramble</h1>
-        </div>
-      </div>
-
-      <div className="flex w-full flex-col items-center justify-center p-8 lg:w-1/2">
-        <Card className="w-full max-w-sm">
+    <div className="flex h-screen bg-primary-background p-4 rounded-xl justify-center">
+      <div className="flex w-full flex-col items-center justify-center p-8 lg:w-1/2 bg-white rounded-xl">
+        <Card className="w-full max-w-sm border-none shadow-none">
           <Header
             bodyLabel="
-              Enter your Email or Phone number to sign in to your account or create your account
+              Enter your Phone number to sign in or create your account
           "
             headerLabel="Sign up"
           />
@@ -128,10 +112,10 @@ export default function Signup() {
                   name="Phone"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Phone Number</FormLabel>
+                      <FormLabel className="text-left">Phone Number</FormLabel>
                       <FormControl>
                         <Input
-                          placeholder="Enter your email or phone number"
+                          placeholder="Enter your phone number"
                           {...field}
                         />
                       </FormControl>
@@ -146,19 +130,58 @@ export default function Signup() {
                   Continue
                 </Button>
 
-                <div className="text-center text-sm text-gray-500">
-                  Or sign up with
+                <div className=" w-full text-center text-sm text-gray-500 flex gap-1 justify-between items-center">
+                  <div
+                    className="bg-gray-500 w-full"
+                    style={{
+                      height: "1px",
+                    }}
+                  ></div>
+                  <div className="w-full">Or sign up with</div>
+                  <div
+                    className="bg-gray-500 w-full"
+                    style={{
+                      height: "1px",
+                    }}
+                  ></div>
                 </div>
 
-                <div className="flex items-center justify-center space-x-2">
-                  <Button variant="outline" className="border border-highlight" onClick={signInWithGoogle}>
-                    Google
+                <div className=" w-full flex flex-row justify-between">
+                  <Button
+                    variant="outline"
+                    className="border-2 border-primary-border p-6 px-8"
+                    onClick={signInWithGoogle}
+                  >
+                    <img
+                      src={"/images/google.png"}
+                      alt="google"
+                      width={25}
+                      height={25}
+                    />
                   </Button>
-                  <Button variant="outline" onClick={signInWithFacebook}>
-                    Facebook
+                  <Button
+                    variant="outline"
+                    className="border-2 border-primary-border p-6 px-8"
+                    onClick={signInWithFacebook}
+                  >
+                    <img
+                      src={"/images/facebook.png"}
+                      alt="facebook"
+                      width={25}
+                      height={25}
+                    />
                   </Button>
-                  <Button variant="outline" onClick={signInWithTwitter}>
-                    X
+                  <Button
+                    variant="outline"
+                    className="border-2 border-primary-border p-6 px-8"
+                    onClick={signInWithTwitter}
+                  >
+                    <img
+                      src={"/images/twitter.png"}
+                      alt="facebook"
+                      width={25}
+                      height={25}
+                    />
                   </Button>
                 </div>
 
