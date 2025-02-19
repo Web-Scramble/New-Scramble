@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -15,7 +14,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import Header from "@/components/features/auth/header";
-import { Eye, EyeOff } from "lucide-react";
 import { accountSchema } from "@/schema/auth_schemas";
 
 type AccountFormValues = {
@@ -25,7 +23,6 @@ type AccountFormValues = {
 
 export default function CreateAccount() {
   const navigate = useNavigate();
-  const [showFullName, setShowFullName] = useState(false);
 
   const form = useForm<AccountFormValues>({
     resolver: yupResolver(accountSchema),
@@ -72,7 +69,7 @@ export default function CreateAccount() {
                       <div className="relative">
                         <FormControl>
                           <Input
-                            type={showFullName ? "text" : "password"}
+                            type={"text"}
                             placeholder="Enter your user name"
                             {...field}
                           />
