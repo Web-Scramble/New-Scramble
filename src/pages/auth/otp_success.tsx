@@ -33,7 +33,7 @@ export default function OtpSuccess() {
 
           <CardFooter className="flex flex-col space-y-4 items-center">
             <Button
-              onClick={() => navigate("/personal-details")}
+              onClick={() => navigate("/create_account")}
               className="w-full bg-primary"
             >
               Continue <ArrowRight className="ml-2 h-4 w-4" />
