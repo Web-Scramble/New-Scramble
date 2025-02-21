@@ -4,7 +4,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { supabase } from "@/services/supabase";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
   Form,
   FormField,
@@ -16,42 +15,39 @@ import {
 import Header from "@/components/features/auth/header";
 import { signupSchema } from "@/schema/auth_schemas";
 import Sidebar from "@/components/features/auth/sidebar";
+import { useState } from "react";
+import { CountrySelect } from "@/components/features/auth/country_select";
 
 type SignupFormValues = {
-  Phone: string;
+  phone: string;
 };
+
 
 export default function Signup() {
   const navigate = useNavigate();
+  const [selectedDialCode, setSelectedDialCode] = useState("+1");
 
   const form = useForm<SignupFormValues>({
     resolver: yupResolver(signupSchema),
     defaultValues: {
-      Phone: "",
+      phone: "",
     },
   });
 
-  const handleNavigate = ()=>{
-    navigate("verify_otp")
-  }
+  const handleNavigate = () => {
+    navigate("verify_otp");
+  };
 
   async function onSubmit(values: SignupFormValues) {
     try {
-      if (isValidEmail(values.Phone)) {
-        const { data, error } = await supabase.auth.signUp({
-          email: values.Phone,
-          password: "tempPassword123",
-        });
-        if (error) throw error;
-        console.log("Sign up successful with email:", data);
-      } else {
-        const { data, error } = await supabase.auth.signUp({
-          phone: values.Phone,
-          password: "tempPassword123",
-        });
-        if (error) throw error;
-        console.log("Sign up successful with phone:", data);
-      }
+      // Combine the dial code with the entered phone number
+      const formattedPhone = `${selectedDialCode}${values.phone}`;
+      const { data, error } = await supabase.auth.signUp({
+        phone: formattedPhone,
+        password: "tempPassword123",
+      });
+      if (error) throw error;
+      console.log("Sign up successful with phone:", data);
     } catch (error) {
       navigate("");
       console.error("Sign up error:", error);
@@ -94,20 +90,13 @@ export default function Signup() {
     }
   }
 
-  function isValidEmail(value: string): boolean {
-    // Very basic regex for demonstration
-    return /\S+@\S+\.\S+/.test(value);
-  }
-
   return (
     <div className="flex h-screen bg-primary-background p-4 rounded-xl gap-4">
-      <Sidebar/>
+      <Sidebar />
       <div className="flex w-full flex-col items-center justify-center p-8 bg-white rounded-xl">
         <Card className="w-full max-w-sm border-none shadow-none">
           <Header
-            bodyLabel="
-              Enter your Phone number to sign in or create your account
-          "
+            bodyLabel="Enter your Phone number to sign in or create your account"
             headerLabel="Sign up"
           />
           <Form {...form}>
@@ -115,15 +104,23 @@ export default function Signup() {
               <CardContent>
                 <FormField
                   control={form.control}
-                  name="Phone"
+                  name="phone"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel className="text-left">Phone Number</FormLabel>
                       <FormControl>
-                        <Input
-                          placeholder="Enter your phone number"
-                          {...field}
-                        />
+                        <div className="flex items-center border border-gray-300 rounded py-1 space-x-2">
+                          <CountrySelect
+                            selectedDialCode={selectedDialCode}
+                            setSelectedDialCode={setSelectedDialCode}
+                          />
+                          <input
+                            type="text"
+                            placeholder="Enter Number"
+                            {...field}
+                            className="w-full px-2 py-1 border-0 focus:outline-none focus:ring-0 text-base font-normal"
+                          />
+                        </div>
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -132,27 +129,21 @@ export default function Signup() {
               </CardContent>
 
               <CardFooter className="flex flex-col space-y-4">
-                <Button type="submit" className="w-full bg-primary" onClick={handleNavigate}>
+                <Button
+                  type="submit"
+                  className="w-full bg-primary"
+                  onClick={handleNavigate}
+                >
                   Continue
                 </Button>
 
-                <div className=" w-full text-center text-sm text-gray-500 flex gap-1 justify-between items-center">
-                  <div
-                    className="bg-gray-500 w-full"
-                    style={{
-                      height: "1px",
-                    }}
-                  ></div>
+                <div className="w-full text-center text-sm text-gray-500 flex gap-1 justify-between items-center">
+                  <div className="bg-gray-500 w-full" style={{ height: "1px" }}></div>
                   <div className="w-full">Or sign up with</div>
-                  <div
-                    className="bg-gray-500 w-full"
-                    style={{
-                      height: "1px",
-                    }}
-                  ></div>
+                  <div className="bg-gray-500 w-full" style={{ height: "1px" }}></div>
                 </div>
 
-                <div className=" w-full flex flex-row justify-between">
+                <div className="w-full flex flex-row justify-between">
                   <Button
                     variant="outline"
                     className="border-2 border-primary-border p-6 px-8"
@@ -184,7 +175,7 @@ export default function Signup() {
                   >
                     <img
                       src={"/images/twitter.png"}
-                      alt="facebook"
+                      alt="twitter"
                       width={25}
                       height={25}
                     />

@@ -2,7 +2,7 @@ import * as yup from "yup"
 
 
 export const signupSchema = yup.object().shape({
-  Phone: yup.string().required("Phone Number is required"),
+  phone: yup.string().required("Phone Number is required"),
 })
 
 export const otpSchema = yup.object().shape({
