@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/form";
 import Header from "@/components/features/auth/header";
 import { signupSchema } from "@/schema/auth_schemas";
+import Sidebar from "@/components/features/auth/sidebar";
 
 type SignupFormValues = {
   Phone: string;
@@ -99,8 +100,9 @@ export default function Signup() {
   }
 
   return (
-    <div className="flex h-screen bg-primary-background p-4 rounded-xl justify-center">
-      <div className="flex w-full flex-col items-center justify-center p-8 lg:w-1/2 bg-white rounded-xl">
+    <div className="flex h-screen bg-primary-background p-4 rounded-xl gap-4">
+      <Sidebar/>
+      <div className="flex w-full flex-col items-center justify-center p-8 bg-white rounded-xl">
         <Card className="w-full max-w-sm border-none shadow-none">
           <Header
             bodyLabel="
