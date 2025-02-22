@@ -1,6 +1,6 @@
 import "./App.css";
 import { Routes, Route } from "react-router";
-import { Signup,VerifyOtp,OtpSuccess,CreateAccount ,AccountSuccess} from "./pages/auth";
+import { Signup,VerifyOtp,CreateAccount ,AccountSuccess} from "./pages/auth";
 import { Toaster} from 'sonner'
 
 function App() {
@@ -9,7 +9,6 @@ function App() {
     <Routes>
       <Route path="/" element={<Signup />} />
       <Route path="/verify_otp/:phone" element={<VerifyOtp />} />
-      <Route path="/success_otp" element={<OtpSuccess />} />
       <Route path="/create_account" element={<CreateAccount />} />
       <Route path="/account_success" element={<AccountSuccess />} />
     </Routes>

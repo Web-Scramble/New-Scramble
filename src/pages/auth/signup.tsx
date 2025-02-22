@@ -39,7 +39,6 @@ export default function Signup() {
 
   async function onSubmit(values: SignupFormValues) {
     const formattedPhone = `${selectedDialCode}${values.phone}`;
-    console.log("pressed",formattedPhone)
     sendOtp(
       { phone: formattedPhone },
       {

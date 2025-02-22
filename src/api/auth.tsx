@@ -12,10 +12,14 @@ const api = axios.create({
  export interface SendOtpPayload {
     phone: string;
   }
- export interface VerifyOtpPayload {
+ export interface ValidateOtpPayload {
     phone: string;
     otp:string;
-  }
+}
+ export interface CreateAccountPayload {
+    phone: string;
+    otp:string;
+}
   
  export interface AuthResponse {
     token: string;
@@ -28,17 +32,17 @@ const api = axios.create({
     return response.data;
   };
   
-  export const validateOtp = async (values: VerifyOtpPayload):Promise<AuthResponse> => {
-    const response = await api.post("auth/validate-otp", values);
+  export const validateOtp = async (values: ValidateOtpPayload):Promise<AuthResponse> => {
+    const response = await api.post("auth/validateOTP", values);
     return response.data;
   };
   
-  export const createUser = async (values: any) => {
+  export const createUser = async (values: CreateAccountPayload):Promise<AuthResponse> => {
     const response = await api.post("auth/register", values);
     return response.data;
   };
   
-  export const socialAuth = async (values: any) => {
-    const response = await api.post("auth/social", values);
-    return response.data;
-  };
+//   export const socialAuth = async (values: any) => {
+//     const response = await api.post("auth/social", values);
+//     return response.data;
+//   };
