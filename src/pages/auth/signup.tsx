@@ -18,7 +18,7 @@ import Sidebar from "@/components/features/auth/sidebar";
 import { useState } from "react";
 import { CountrySelect } from "@/components/features/auth/country_select";
 import { useSendOtp } from "@/hooks/auth/useSendOtp";
-import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { signInWithPopup, GoogleAuthProvider, FacebookAuthProvider } from "firebase/auth";
 import { auth } from "@/services/firebase";
 import { useSocialAuth } from "@/hooks/auth/useSocialAuth";
 import { authStore } from "@/store/authstore";
@@ -97,27 +97,53 @@ export default function Signup() {
 
   async function signInWithFacebook() {
     try {
-      const { data, error } = await supabase.auth.signInWithOAuth({
-        provider: "facebook",
-      });
-      if (error) throw error;
-      console.log("Facebook OAuth data:", data);
-    } catch (error) {
-      console.error("Facebook sign in error:", error);
+      const provider = new FacebookAuthProvider();
+      const result = await signInWithPopup(auth, provider);
+      const credential = FacebookAuthProvider.credentialFromResult(result);
+      if (!credential) {
+        console.error("Error in user Credential");
+        return;
+      }
+      const token = credential.accessToken;
+      const user = result.user;
+      console.log(user, token);
+      auth?.currentUser?.getIdToken(/* forceRefresh */ true).then((idToken) =>
+        socialAuth(
+          {
+            token: idToken,
+          },
+          {
+            onSuccess: (data) => {
+              console.log(data);
+              setItemToLocalStorage(USER_DATA, data.user);
+              setItemToLocalStorage(TOKEN, data.token);
+              updateToken(data.token);
+              updateUser(data.user);
+              if (!data.user.phone) {
+                navigate(`/verify_otp/`)
+              }
+              navigate(`/home`)
+            },
+          }
+        )
+      );
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      console.log(error);
     }
   }
 
-  // async function signInWithTwitter() {
-  //   try {
-  //     const { data, error } = await supabase.auth.signInWithOAuth({
-  //       provider: "twitter",
-  //     });
-  //     if (error) throw error;
-  //     console.log("Twitter (X) OAuth data:", data);
-  //   } catch (error) {
-  //     console.error("Twitter sign in error:", error);
-  //   }
-  // }
+  async function signInWithTwitter() {
+    try {
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: "twitter",
+      });
+      if (error) throw error;
+      console.log("Twitter (X) OAuth data:", data);
+    } catch (error) {
+      console.error("Twitter sign in error:", error);
+    }
+  }
 
   return (
     <div className="flex h-screen bg-primary-background p-4 rounded-xl gap-4">
@@ -209,8 +235,7 @@ export default function Signup() {
               <Button
                 variant="outline"
                 className="border-2 border-primary-border p-6 px-8"
-                // onClick={signInWithTwitter}
-                onClick={()=>navigate("/home")}
+                onClick={signInWithTwitter}
               >
                 <img
                   src={"/images/twitter.png"}

@@ -1,6 +1,6 @@
 import "./App.css";
 import { Routes, Route, Navigate, useLocation } from "react-router";
-import { Signup, VerifyOtp, CreateAccount, LandingPage } from "@/pages/auth";
+import { Signup, VerifyOtp, CreateAccount, LandingPage,AddPhone } from "@/pages/auth";
 import Dashboard from "@/pages/home";
 import { Toaster } from "sonner";
 import { TOKEN, USER_DATA } from "@/constants/keys";
@@ -11,7 +11,7 @@ import { authStore } from "./store/authstore";
 function App() {
   const { token, reloading, setReloading, updateToken, updateUser } =
     authStore();
-    
+
   useEffect(() => {
     const getSavedToken = async () => {
       const oldToken = await getItemFromLocalStorage(TOKEN);
@@ -58,7 +58,7 @@ function App() {
         <Route path="/create_account/:phone" element={<CreateAccount />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/home" element={<Dashboard />} />
-        <Route path="/home" element={<Dashboard />} />
+        <Route path="/add_phone" element={<AddPhone />} />
         <Route
           path="/home"
           element={
