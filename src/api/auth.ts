@@ -1,5 +1,11 @@
 import axios from "axios";
-import { SendOtpPayload,ValidateOtpPayload,CreateUserPayload,AuthResponse } from "@/types/authentication";
+import { 
+  SendOtpPayload,
+  ValidateOtpPayload,
+  CreateUserPayload,
+  SocialAuthPayload,
+  AuthResponse
+ } from "@/types/authentication";
 
 const baseURL = import.meta.env.VITE_API_URL
 
@@ -27,7 +33,7 @@ const api = axios.create({
     return response.data;
   };
   
-//   export const socialAuth = async (values: any) => {
-//     const response = await api.post("auth/social", values);
-//     return response.data;
-//   };
+  export const socialAuth = async (values: SocialAuthPayload):Promise<AuthResponse> => {
+    const response = await api.post("auth/socialAuth", values);
+    return response.data;
+  };

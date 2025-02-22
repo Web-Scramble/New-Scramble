@@ -5,7 +5,7 @@ import { SendOtpPayload} from "@/types/authentication";
 
 import { AxiosError } from "axios";
 
-export function useSendOtp() {
+export const useSendOtp=()=> {
   return useMutation({
     mutationFn: (phone: SendOtpPayload) => sendOtp(phone),
     onSuccess: () => {

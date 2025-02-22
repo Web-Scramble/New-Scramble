@@ -14,46 +14,45 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import Header from "@/components/features/auth/header";
-import { accountSchema } from "@/schema/auth_schemas";
+import { signupSchema } from "@/schema/auth_schemas";
 import Sidebar from "@/components/features/auth/sidebar";
 import { useCreateUser } from "@/hooks/auth/useCreateUser";
 import { useState } from "react";
 import { Check, ArrowRight } from "lucide-react";
 import { setItemToLocalStorage } from "@/utils/localStorage";
 import { authStore } from "@/store/authstore";
-import { TOKEN, USER_DATA } from "@/constants/keys";
 
-type AccountFormValues = {
-  email: string;
+type AddPhoneFormValues = {
+  phone: string;
   fullName: string;
 };
 
-export default function CreateAccount() {
+export default function AddPhone() {
   const navigate = useNavigate();
   const { phone } = useParams();
-  const { updateToken, updateUser } = authStore();
+  const { updateToken, updateUser,user } = authStore();
   const [success, setSuccess] = useState(false);
 
-  const form = useForm<AccountFormValues>({
-    resolver: yupResolver(accountSchema),
-    defaultValues: { email: "", fullName: "" },
+  const form = useForm<AddPhoneFormValues>({
+    resolver: yupResolver(signupSchema),
+    defaultValues: { phone: "" },
   });
 
   const { mutate: createUserMutation, isPending } = useCreateUser();
 
-  const onSubmit = (values: AccountFormValues) => {
+  const onSubmit = (values: AddPhoneFormValues) => {
     if (!phone) return;
     const payload = {
       phone,
-      email: values.email,
-      username: values.fullName,
+      email: user.email,
+      username: user.username,
     };
 
     createUserMutation(payload, {
       onSuccess: (data) => {
         setSuccess(true);
-        setItemToLocalStorage(USER_DATA, data.user);
-        setItemToLocalStorage(TOKEN, data.token);
+        setItemToLocalStorage("USER_DATA", data.user);
+        setItemToLocalStorage("TOKEN", data.token);
         updateToken(data.token);
         updateUser(data.user);
       },
@@ -99,7 +98,7 @@ export default function CreateAccount() {
                 <CardContent className="flex flex-col space-y-6">
                   <FormField
                     control={form.control}
-                    name="email"
+                    name="phone"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel className="text-left">Enter Email</FormLabel>

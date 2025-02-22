@@ -18,6 +18,12 @@ import Sidebar from "@/components/features/auth/sidebar";
 import { useState } from "react";
 import { CountrySelect } from "@/components/features/auth/country_select";
 import { useSendOtp } from "@/hooks/auth/useSendOtp";
+import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { auth } from "@/services/firebase";
+import { useSocialAuth } from "@/hooks/auth/useSocialAuth";
+import { authStore } from "@/store/authstore";
+import { setItemToLocalStorage } from "@/utils/localStorage";
+import { TOKEN, USER_DATA } from "@/constants/keys";
 
 type SignupFormValues = {
   phone: string;
@@ -26,6 +32,7 @@ type SignupFormValues = {
 export default function Signup() {
   const navigate = useNavigate();
   const [selectedDialCode, setSelectedDialCode] = useState("+1");
+  const { updateToken, updateUser } = authStore();
 
   const form = useForm<SignupFormValues>({
     resolver: yupResolver(signupSchema),
@@ -35,6 +42,7 @@ export default function Signup() {
   });
 
   const { mutate: sendOtp, isPending } = useSendOtp();
+  const { mutate: socialAuth } = useSocialAuth();
 
   async function onSubmit(values: SignupFormValues) {
     const formattedPhone = `${selectedDialCode}${values.phone}`;
@@ -48,17 +56,44 @@ export default function Signup() {
     );
   }
 
-  async function signInWithGoogle() {
+  const SignupWithGoogle = async () => {
     try {
-      const { data, error } = await supabase.auth.signInWithOAuth({
-        provider: "google",
-      });
-      if (error) throw error;
-      console.log("Google OAuth data:", data);
-    } catch (error) {
-      console.error("Google sign in error:", error);
+      const provider = new GoogleAuthProvider();
+      const result = await signInWithPopup(auth, provider);
+      const credential = GoogleAuthProvider.credentialFromResult(result);
+      if (!credential) {
+        console.error("Error in user Credential");
+        return;
+      }
+      const token = credential.accessToken;
+      const user = result.user;
+      console.log(user, token);
+      auth?.currentUser?.getIdToken(/* forceRefresh */ true).then((idToken) =>
+        socialAuth(
+          {
+            token: idToken,
+          },
+          {
+            onSuccess: (data) => {
+              console.log(data);
+              setItemToLocalStorage(USER_DATA, data.user);
+              setItemToLocalStorage(TOKEN, data.token);
+              updateToken(data.token);
+              updateUser(data.user);
+              if (!data.user.phone) {
+                navigate(`/verify_otp/`)
+              }
+              navigate(`/home`)
+            },
+          }
+        )
+      );
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      console.log(error);
     }
-  }
+  };
 
   async function signInWithFacebook() {
     try {
@@ -72,17 +107,17 @@ export default function Signup() {
     }
   }
 
-  async function signInWithTwitter() {
-    try {
-      const { data, error } = await supabase.auth.signInWithOAuth({
-        provider: "twitter",
-      });
-      if (error) throw error;
-      console.log("Twitter (X) OAuth data:", data);
-    } catch (error) {
-      console.error("Twitter sign in error:", error);
-    }
-  }
+  // async function signInWithTwitter() {
+  //   try {
+  //     const { data, error } = await supabase.auth.signInWithOAuth({
+  //       provider: "twitter",
+  //     });
+  //     if (error) throw error;
+  //     console.log("Twitter (X) OAuth data:", data);
+  //   } catch (error) {
+  //     console.error("Twitter sign in error:", error);
+  //   }
+  // }
 
   return (
     <div className="flex h-screen bg-primary-background p-4 rounded-xl gap-4">
@@ -123,81 +158,81 @@ export default function Signup() {
                   )}
                 />
               </CardContent>
-
-              <CardFooter className="flex flex-col space-y-4">
-                <Button
-                  type="submit"
-                  className="w-full bg-primary"
-                  disabled={isPending}
-                >
-                  {isPending ? "Sending OTP..." : "Continue"}
-                </Button>
-
-                <div className="w-full text-center text-sm text-gray-500 flex gap-1 justify-between items-center">
-                  <div
-                    className="bg-gray-500 w-full"
-                    style={{ height: "1px" }}
-                  ></div>
-                  <div className="w-full">Or sign up with</div>
-                  <div
-                    className="bg-gray-500 w-full"
-                    style={{ height: "1px" }}
-                  ></div>
-                </div>
-
-                <div className="w-full flex flex-row justify-between">
-                  <Button
-                    variant="outline"
-                    className="border-2 border-primary-border p-6 px-8"
-                    onClick={signInWithGoogle}
-                  >
-                    <img
-                      src={"/images/google.png"}
-                      alt="google"
-                      width={25}
-                      height={25}
-                    />
-                  </Button>
-                  <Button
-                    variant="outline"
-                    className="border-2 border-primary-border p-6 px-8"
-                    onClick={signInWithFacebook}
-                  >
-                    <img
-                      src={"/images/facebook.png"}
-                      alt="facebook"
-                      width={25}
-                      height={25}
-                    />
-                  </Button>
-                  <Button
-                    variant="outline"
-                    className="border-2 border-primary-border p-6 px-8"
-                    onClick={signInWithTwitter}
-                  >
-                    <img
-                      src={"/images/twitter.png"}
-                      alt="twitter"
-                      width={25}
-                      height={25}
-                    />
-                  </Button>
-                </div>
-
-                <p className="text-center text-xs text-gray-500">
-                  By continuing I agree to Scramble's{" "}
-                  <Link to="#" className="text-highlight underline">
-                    terms & condition
-                  </Link>{" "}
-                  and their{" "}
-                  <Link to="#" className="text-highlight underline">
-                    privacy policy
-                  </Link>
-                  .
-                </p>
-              </CardFooter>
             </form>
           </Form>
+          <CardFooter className="flex flex-col space-y-4">
+            <Button
+              type="submit"
+              className="w-full bg-primary"
+              disabled={isPending}
+            >
+              {isPending ? "Sending OTP..." : "Continue"}
+            </Button>
+
+            <div className="w-full text-center text-sm text-gray-500 flex gap-1 justify-between items-center">
+              <div
+                className="bg-gray-500 w-full"
+                style={{ height: "1px" }}
+              ></div>
+              <div className="w-full">Or sign up with</div>
+              <div
+                className="bg-gray-500 w-full"
+                style={{ height: "1px" }}
+              ></div>
+            </div>
+
+            <div className="w-full flex flex-row justify-between">
+              <Button
+                variant="outline"
+                className="border-2 border-primary-border p-6 px-8"
+                onClick={SignupWithGoogle}
+              >
+                <img
+                  src={"/images/google.png"}
+                  alt="google"
+                  width={25}
+                  height={25}
+                />
+              </Button>
+              <Button
+                variant="outline"
+                className="border-2 border-primary-border p-6 px-8"
+                onClick={signInWithFacebook}
+              >
+                <img
+                  src={"/images/facebook.png"}
+                  alt="facebook"
+                  width={25}
+                  height={25}
+                />
+              </Button>
+              <Button
+                variant="outline"
+                className="border-2 border-primary-border p-6 px-8"
+                // onClick={signInWithTwitter}
+                onClick={()=>navigate("/home")}
+              >
+                <img
+                  src={"/images/twitter.png"}
+                  alt="twitter"
+                  width={25}
+                  height={25}
+                />
+              </Button>
+            </div>
+
+            <p className="text-center text-xs text-gray-500">
+              By continuing I agree to Scramble's{" "}
+              <Link to="#" className="text-highlight underline">
+                terms & condition
+              </Link>{" "}
+              and their{" "}
+              <Link to="#" className="text-highlight underline">
+                privacy policy
+              </Link>
+              .
+            </p>
+          </CardFooter>
         </Card>
       </div>
     </div>

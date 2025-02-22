@@ -10,6 +10,9 @@
     username:string;
     email:string;
 }
+ export type SocialAuthPayload ={
+    token: string;
+}
   
  export interface AuthResponse {
     token: string;

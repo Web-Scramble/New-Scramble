@@ -5,7 +5,7 @@ import { ValidateOtpPayload } from "@/types/authentication";
 
 import { AxiosError } from "axios";
 
-export function useValidateOtp() {
+export const useValidateOtp=()=> {
   return useMutation({
     mutationFn: (value:ValidateOtpPayload) =>validateOtp(value),
     onSuccess: () => {

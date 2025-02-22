@@ -2,7 +2,6 @@ import { useNavigate } from "react-router";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Header from "@/components/features/auth/header";
-import Sidebar from "@/components/features/auth/sidebar";
 
 export default function LandingPage() {
   const navigate = useNavigate();
@@ -13,7 +12,6 @@ export default function LandingPage() {
 
   return (
     <div className="flex h-screen bg-primary-background p-4 rounded-xl gap-4">
-      <Sidebar />
       <div className="flex w-full flex-col items-center justify-center p-8 bg-white rounded-xl">
         <Card className="w-full max-w-sm border-none shadow-none">
           <Header

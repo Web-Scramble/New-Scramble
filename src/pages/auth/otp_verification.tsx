@@ -70,6 +70,9 @@ export default function VerifyOtp() {
         if (data.message === "Complete registration required") {
           setSuccess(true);
         }
+        if (data.message === "Login successful") {
+          navigate("")
+        }
       },
     });
   };
@@ -109,7 +112,6 @@ export default function VerifyOtp() {
             <CardFooter className="flex flex-col space-y-4 items-center">
               <Button
                 onClick={() => navigate(`/create_account/${phone}`)}
-                //   onClick={() => navigate("/account_success")}
                 className="w-full bg-primary"
               >
                 Continue <ArrowRight className="ml-2 h-4 w-4" />

@@ -5,7 +5,7 @@ import { CreateUserPayload } from "@/types/authentication";
 
 import { AxiosError } from "axios";
 
-export function useCreateUser() {
+export const useCreateUser=()=> {
   return useMutation({
     mutationFn: (value:CreateUserPayload) =>createUser(value),
     onSuccess: () => {
