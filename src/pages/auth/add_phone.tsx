@@ -4,7 +4,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
   Form,
   FormField,
@@ -14,46 +13,46 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import Header from "@/components/features/auth/header";
-import { accountSchema } from "@/schema/auth_schemas";
+import { signupSchema } from "@/schema/auth_schemas";
 import Sidebar from "@/components/features/auth/sidebar";
 import { useCreateUser } from "@/hooks/auth/useCreateUser";
 import { useState } from "react";
 import { Check, ArrowRight } from "lucide-react";
 import { setItemToLocalStorage } from "@/utils/localStorage";
 import { authStore } from "@/store/authstore";
-import { TOKEN, USER_DATA } from "@/constants/keys";
+import { CountrySelect } from "@/components/features/auth/country_select";
 
-type AccountFormValues = {
-  email: string;
-  fullName: string;
+type AddPhoneFormValues = {
+  phone: string;
 };
 
-export default function CreateAccount() {
+export default function AddPhone() {
   const navigate = useNavigate();
   const { phone } = useParams();
-  const { updateToken, updateUser } = authStore();
+  const { updateToken, updateUser, user } = authStore();
   const [success, setSuccess] = useState(false);
+  const [selectedDialCode, setSelectedDialCode] = useState("+1");
 
-  const form = useForm<AccountFormValues>({
-    resolver: yupResolver(accountSchema),
-    defaultValues: { email: "", fullName: "" },
+  const form = useForm<AddPhoneFormValues>({
+    resolver: yupResolver(signupSchema),
+    defaultValues: { phone: "" },
   });
 
   const { mutate: createUserMutation, isPending } = useCreateUser();
 
-  const onSubmit = (values: AccountFormValues) => {
+  const onSubmit = (values: AddPhoneFormValues) => {
     if (!phone) return;
     const payload = {
-      phone,
-      email: values.email,
-      username: values.fullName,
+      phone: values.phone,
+      email: user.email,
+      username: user.username,
     };
 
     createUserMutation(payload, {
       onSuccess: (data) => {
         setSuccess(true);
-        setItemToLocalStorage(USER_DATA, data.user);
-        setItemToLocalStorage(TOKEN, data.token);
+        setItemToLocalStorage("USER_DATA", data.user);
+        setItemToLocalStorage("TOKEN", data.token);
         updateToken(data.token);
         updateUser(data.user);
       },
@@ -90,45 +89,35 @@ export default function CreateAccount() {
         <div className="flex w-full flex-col items-center justify-center p-8 bg-white rounded-xl">
           <Card className="w-full max-w-sm border-none shadow-none">
             <Header
-              bodyLabel="Choose a unique username for your account. You can always change it later."
-              headerLabel="Create your username"
+              bodyLabel="Add a Phone Number to your Account"
+              headerLabel="Add  Phone"
             />
 
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)}>
-                <CardContent className="flex flex-col space-y-6">
+                <CardContent>
                   <FormField
                     control={form.control}
-                    name="email"
+                    name="phone"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-left">Enter Email</FormLabel>
+                        <FormLabel className="text-left text-black">
+                          Phone Number
+                        </FormLabel>
                         <FormControl>
-                          <Input placeholder="Enter your Email" {...field} />
-                        </FormControl>
-                        <FormMessage className="text-xs" />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="fullName"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-left">Full Name</FormLabel>
-                        <div className="relative">
-                          <FormControl>
-                            <Input
-                              type="text"
-                              placeholder="Enter your full name"
-                              {...field}
+                          <div className="flex items-center border border-gray-300 rounded py-1 space-x-2">
+                            <CountrySelect
+                              selectedDialCode={selectedDialCode}
+                              setSelectedDialCode={setSelectedDialCode}
                             />
-                          </FormControl>
-                        </div>
-                        <p className="text-xs text-gray-500 mt-1">
-                          First name and Last name e.g Edga Alane or Alane Edga
-                        </p>
+                            <input
+                              type="text"
+                              placeholder="Enter Number"
+                              {...field}
+                              className="w-full px-2 py-1 border-0 focus:outline-none focus:ring-0 text-base font-normal"
+                            />
+                          </div>
+                        </FormControl>
                         <FormMessage className="text-xs" />
                       </FormItem>
                     )}
