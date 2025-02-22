@@ -8,7 +8,7 @@ function App() {
     <>
     <Routes>
       <Route path="/" element={<Signup />} />
-      <Route path="/verify_otp" element={<VerifyOtp />} />
+      <Route path="/verify_otp/:phone" element={<VerifyOtp />} />
       <Route path="/success_otp" element={<OtpSuccess />} />
       <Route path="/create_account" element={<CreateAccount />} />
       <Route path="/account_success" element={<AccountSuccess />} />

@@ -17,6 +17,7 @@ import { signupSchema } from "@/schema/auth_schemas";
 import Sidebar from "@/components/features/auth/sidebar";
 import { useState } from "react";
 import { CountrySelect } from "@/components/features/auth/country_select";
+import { useSendOtp } from "@/hooks/api/useSendOtp";
 
 type SignupFormValues = {
   phone: string;
@@ -34,24 +35,19 @@ export default function Signup() {
     },
   });
 
-  const handleNavigate = () => {
-    navigate("verify_otp");
-  };
+  const { mutate: sendOtp, isPending } = useSendOtp();
 
   async function onSubmit(values: SignupFormValues) {
-    try {
-      // Combine the dial code with the entered phone number
-      const formattedPhone = `${selectedDialCode}${values.phone}`;
-      const { data, error } = await supabase.auth.signUp({
-        phone: formattedPhone,
-        password: "tempPassword123",
-      });
-      if (error) throw error;
-      console.log("Sign up successful with phone:", data);
-    } catch (error) {
-      navigate("");
-      console.error("Sign up error:", error);
-    }
+    const formattedPhone = `${selectedDialCode}${values.phone}`;
+    console.log("pressed",formattedPhone)
+    sendOtp(
+      { phone: formattedPhone },
+      {
+        onSuccess: () => {
+          navigate(`verify_otp/${formattedPhone}`);
+        },
+      }
+    );
   }
 
   async function signInWithGoogle() {
@@ -107,7 +103,7 @@ export default function Signup() {
                   name="phone"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-left">Phone Number</FormLabel>
+                      <FormLabel className="text-left text-black">Phone Number</FormLabel>
                       <FormControl>
                         <div className="flex items-center border border-gray-300 rounded py-1 space-x-2">
                           <CountrySelect
@@ -122,20 +118,16 @@ export default function Signup() {
                           />
                         </div>
                       </FormControl>
-                      <FormMessage />
+                      <FormMessage className="text-xs"/>
                     </FormItem>
                   )}
                 />
               </CardContent>
 
               <CardFooter className="flex flex-col space-y-4">
-                <Button
-                  type="submit"
-                  className="w-full bg-primary"
-                  onClick={handleNavigate}
-                >
-                  Continue
-                </Button>
+              <Button type="submit" className="w-full bg-primary" disabled={isPending}>
+                {isPending ? "Sending OTP..." : "Continue"}
+              </Button>
 
                 <div className="w-full text-center text-sm text-gray-500 flex gap-1 justify-between items-center">
                   <div className="bg-gray-500 w-full" style={{ height: "1px" }}></div>

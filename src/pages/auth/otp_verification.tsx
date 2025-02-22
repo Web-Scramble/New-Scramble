@@ -8,6 +8,8 @@ import { InputOTP, InputOTPSlot} from "@/components/ui/input-otp";
 import Header from "@/components/features/auth/header";
 import { otpSchema } from "@/schema/auth_schemas";
 import Sidebar from "@/components/features/auth/sidebar";
+import { useParams } from "react-router";
+
 
 
 
@@ -17,14 +19,14 @@ type OtpFormValues = {
 
 export default function VerifyOtp() {
   const navigate = useNavigate();
+  // const { phone } = useParams();
+  const phone = "+237683776416"
 
   const form = useForm<OtpFormValues>({
     resolver: yupResolver(otpSchema),
     defaultValues: { otp: "" },
   });
-  const handleNavigate = ()=>{
-    navigate("verify_otp")
-  }
+
   const onSubmit = (values: OtpFormValues) => {
     console.log("OTP Submitted:", values.otp);
     navigate("/success_otp");
