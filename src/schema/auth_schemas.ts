@@ -12,6 +12,15 @@ export const otpSchema = yup.object().shape({
   otp: yup.string().length(6, "OTP must be exactly 6 digits").required("OTP is required"),
 });
 export const accountSchema = yup.object().shape({
-  email: yup.string().required("Email is required"),
-  fullName: yup.string().required("Full name is required"),
+  email: yup
+    .string()
+    .trim()
+    .lowercase()
+    .email("Please enter a valid email address")
+    .required("Email is required"),
+  fullName: yup
+    .string()
+    .trim()
+    .matches(/^[a-zA-Z\s]+$/, "Full Name can only contain letters and spaces")
+    .required("Full Name is required"),
 });

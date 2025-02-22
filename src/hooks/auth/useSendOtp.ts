@@ -1,11 +1,13 @@
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
-import {ValidateOtpPayload,validateOtp} from "@/api/auth";
+import {  sendOtp} from "@/api/auth";
+import { SendOtpPayload} from "@/types/authentication";
+
 import { AxiosError } from "axios";
 
-export function useValidateOtp() {
+export function useSendOtp() {
   return useMutation({
-    mutationFn: (value:ValidateOtpPayload) =>validateOtp(value),
+    mutationFn: (phone: SendOtpPayload) => sendOtp(phone),
     onSuccess: () => {
       toast.success("OTP sent successfully");
     },

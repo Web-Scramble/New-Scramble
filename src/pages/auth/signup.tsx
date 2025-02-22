@@ -17,12 +17,11 @@ import { signupSchema } from "@/schema/auth_schemas";
 import Sidebar from "@/components/features/auth/sidebar";
 import { useState } from "react";
 import { CountrySelect } from "@/components/features/auth/country_select";
-import { useSendOtp } from "@/hooks/api/useSendOtp";
+import { useSendOtp } from "@/hooks/auth/useSendOtp";
 
 type SignupFormValues = {
   phone: string;
 };
-
 
 export default function Signup() {
   const navigate = useNavigate();
@@ -43,7 +42,7 @@ export default function Signup() {
       { phone: formattedPhone },
       {
         onSuccess: () => {
-          navigate(`verify_otp/${formattedPhone}`);
+          navigate(`/verify_otp/${formattedPhone}`);
         },
       }
     );
@@ -102,7 +101,9 @@ export default function Signup() {
                   name="phone"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-left text-black">Phone Number</FormLabel>
+                      <FormLabel className="text-left text-black">
+                        Phone Number
+                      </FormLabel>
                       <FormControl>
                         <div className="flex items-center border border-gray-300 rounded py-1 space-x-2">
                           <CountrySelect
@@ -117,21 +118,31 @@ export default function Signup() {
                           />
                         </div>
                       </FormControl>
-                      <FormMessage className="text-xs"/>
+                      <FormMessage className="text-xs" />
                     </FormItem>
                   )}
                 />
               </CardContent>
 
               <CardFooter className="flex flex-col space-y-4">
-              <Button type="submit" className="w-full bg-primary" disabled={isPending}>
-                {isPending ? "Sending OTP..." : "Continue"}
-              </Button>
+                <Button
+                  type="submit"
+                  className="w-full bg-primary"
+                  disabled={isPending}
+                >
+                  {isPending ? "Sending OTP..." : "Continue"}
+                </Button>
 
                 <div className="w-full text-center text-sm text-gray-500 flex gap-1 justify-between items-center">
-                  <div className="bg-gray-500 w-full" style={{ height: "1px" }}></div>
+                  <div
+                    className="bg-gray-500 w-full"
+                    style={{ height: "1px" }}
+                  ></div>
                   <div className="w-full">Or sign up with</div>
-                  <div className="bg-gray-500 w-full" style={{ height: "1px" }}></div>
+                  <div
+                    className="bg-gray-500 w-full"
+                    style={{ height: "1px" }}
+                  ></div>
                 </div>
 
                 <div className="w-full flex flex-row justify-between">

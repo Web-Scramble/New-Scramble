@@ -1,4 +1,5 @@
 import axios from "axios";
+import { SendOtpPayload,ValidateOtpPayload,CreateUserPayload,AuthResponse } from "@/types/authentication";
 
 const baseURL = import.meta.env.VITE_API_URL
 
@@ -9,23 +10,7 @@ const api = axios.create({
     },
   });
 
- export interface SendOtpPayload {
-    phone: string;
-  }
- export interface ValidateOtpPayload {
-    phone: string;
-    otp:string;
-}
- export interface CreateAccountPayload {
-    phone: string;
-    otp:string;
-}
-  
- export interface AuthResponse {
-    token: string;
-    user: { id: string; name: string };
-    message:string;
-  }
+
 
   export const sendOtp = async (values: SendOtpPayload):Promise<AuthResponse> => {
     const response = await api.post("auth/sendOTP", values);
@@ -37,7 +22,7 @@ const api = axios.create({
     return response.data;
   };
   
-  export const createUser = async (values: CreateAccountPayload):Promise<AuthResponse> => {
+  export const createUser = async (values: CreateUserPayload):Promise<AuthResponse> => {
     const response = await api.post("auth/register", values);
     return response.data;
   };

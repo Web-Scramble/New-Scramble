@@ -1,6 +1,6 @@
 import Signup from "./signup";
 import VerifyOtp from "./otp_verification";
 import CreateAccount from "./account_creation";
-import AccountSuccess from "./account_success";
+import LandingPage from "./landing";
 
-export {Signup,VerifyOtp,CreateAccount,AccountSuccess}
+export {Signup,VerifyOtp,CreateAccount,LandingPage}

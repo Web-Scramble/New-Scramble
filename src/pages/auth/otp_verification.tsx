@@ -16,8 +16,8 @@ import { otpSchema } from "@/schema/auth_schemas";
 import Sidebar from "@/components/features/auth/sidebar";
 import { useParams } from "react-router";
 import { useEffect, useState } from "react";
-import { useValidateOtp } from "@/hooks/api/useValidateOtp";
-import { useSendOtp } from "@/hooks/api/useSendOtp";
+import { useValidateOtp } from "@/hooks/auth/useValidateOtp";
+import { useSendOtp } from "@/hooks/auth/useSendOtp";
 import { toast } from "sonner";
 import { ArrowRight, Check } from "lucide-react";
 
@@ -94,7 +94,7 @@ export default function VerifyOtp() {
     <div className="flex h-screen bg-primary-background p-4 rounded-xl gap-4">
       <Sidebar />
       {success ? (
-        <div className="flex w-full flex-col items-center justify-center p-8 lg:w-1/2 bg-white rounded-xl">
+        <div className="flex w-full flex-col items-center justify-center p-8 bg-white rounded-xl">
           <Card className="w-full max-w-sm border-none shadow-none text-center">
             <CardContent className="flex flex-col items-center space-y-6">
               <div className="p-3 bg-[#12B76A] text-white rounded-sm">
@@ -108,7 +108,7 @@ export default function VerifyOtp() {
 
             <CardFooter className="flex flex-col space-y-4 items-center">
               <Button
-                onClick={() => navigate("/create_account")}
+                onClick={() => navigate(`/create_account/${phone}`)}
                 //   onClick={() => navigate("/account_success")}
                 className="w-full bg-primary"
               >
