@@ -1,7 +1,6 @@
 import { Link, useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { supabase } from "@/services/supabase";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
@@ -135,11 +134,7 @@ export default function Signup() {
 
   async function signInWithTwitter() {
     try {
-      const { data, error } = await supabase.auth.signInWithOAuth({
-        provider: "twitter",
-      });
-      if (error) throw error;
-      console.log("Twitter (X) OAuth data:", data);
+      console.log("twitter")
     } catch (error) {
       console.error("Twitter sign in error:", error);
     }
@@ -191,6 +186,7 @@ export default function Signup() {
               type="submit"
               className="w-full bg-primary"
               disabled={isPending}
+              onClick={form.handleSubmit(onSubmit)}
             >
               {isPending ? "Sending OTP..." : "Continue"}
             </Button>

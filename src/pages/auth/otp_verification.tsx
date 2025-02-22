@@ -20,6 +20,9 @@ import { useValidateOtp } from "@/hooks/auth/useValidateOtp";
 import { useSendOtp } from "@/hooks/auth/useSendOtp";
 import { toast } from "sonner";
 import { ArrowRight, Check } from "lucide-react";
+import { authStore } from "@/store/authstore";
+import { setItemToLocalStorage } from "@/utils/localStorage";
+import { TOKEN, USER_DATA } from "@/constants/keys";
 
 type OtpFormValues = {
   otp: string;
@@ -29,6 +32,7 @@ export default function VerifyOtp() {
   const navigate = useNavigate();
   const { phone } = useParams();
   const [success, setSuccess] = useState(false);
+  const { updateToken, updateUser } = authStore();
 
   const form = useForm<OtpFormValues>({
     resolver: yupResolver(otpSchema),
@@ -71,7 +75,11 @@ export default function VerifyOtp() {
           setSuccess(true);
         }
         if (data.message === "Login successful") {
-          navigate("")
+          setItemToLocalStorage(USER_DATA, data.user);
+          setItemToLocalStorage(TOKEN, data.token);
+          updateToken(data.token);
+          updateUser(data.user);
+          navigate("/home");
         }
       },
     });

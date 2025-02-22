@@ -1,4 +1,3 @@
-import React from "react";
 import { CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 
 type HeaderProps = {
@@ -10,7 +9,6 @@ const Header = ({ headerLabel, bodyLabel }: HeaderProps) => {
     <div>
       <CardHeader>
         <CardTitle className="font-grotesk text-3xl" >{headerLabel}</CardTitle>
-
         <CardDescription className="font-inter">{bodyLabel}</CardDescription>
       </CardHeader>
     </div>
