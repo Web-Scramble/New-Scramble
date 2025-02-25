@@ -43,7 +43,7 @@ export default function VerifyOtp() {
     useValidateOtp();
   const { mutate: resendOtp, isPending: resending } = useSendOtp();
 
-  const [timeLeft, setTimeLeft] = useState(300);
+  const [timeLeft, setTimeLeft] = useState(60);
 
   useEffect(() => {
     if (timeLeft > 0) {
@@ -95,7 +95,7 @@ export default function VerifyOtp() {
       {
         onSuccess: () => {
           toast.success("OTP resent successfully");
-          setTimeLeft(300);
+          setTimeLeft(60);
         },
       }
     );
