@@ -14,7 +14,7 @@ import {
 import Header from "@/components/features/auth/header";
 import { signupSchema } from "@/schema/auth_schemas";
 import Sidebar from "@/components/features/auth/sidebar";
-import { useState } from "react";
+import { useState,useRef } from "react";
 import { CountrySelect } from "@/components/features/auth/country_select";
 import { useSendOtp } from "@/hooks/auth/useSendOtp";
 import { signInWithPopup, GoogleAuthProvider, FacebookAuthProvider } from "firebase/auth";
@@ -32,6 +32,7 @@ export default function Signup() {
   const navigate = useNavigate();
   const [selectedDialCode, setSelectedDialCode] = useState("+1");
   const { updateToken, updateUser } = authStore();
+  const screenRef = useRef(null)
 
   const form = useForm<SignupFormValues>({
     resolver: yupResolver(signupSchema),
