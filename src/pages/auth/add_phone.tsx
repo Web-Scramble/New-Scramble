@@ -60,10 +60,10 @@ export default function AddPhone() {
   };
 
   return (
-    <div className="flex h-screen bg-primary-background p-4 rounded-xl gap-4 ">
+    <div className="flex flex-col md:flex-row h-full lg:h-screen bg-primary-background p-4 rounded-xl gap-4">
       <Sidebar />
       {success ? (
-        <div className="flex w-full flex-col items-center justify-center p-8 bg-white rounded-xl">
+        <div className="flex w-full flex-col items-center justify-center md:p-8 bg-white rounded-xl">
           <Card className="w-full max-w-sm border-none shadow-none text-center">
             <CardContent className="flex flex-col items-center space-y-6">
               <div className="p-3 bg-[#12B76A] text-white rounded-sm">
@@ -86,13 +86,12 @@ export default function AddPhone() {
           </Card>
         </div>
       ) : (
-        <div className="flex w-full flex-col items-center justify-center p-8 bg-white rounded-xl">
+        <div className="flex w-full flex-col items-center justify-center md:p-8 bg-white rounded-xl">
           <Card className="w-full max-w-sm border-none shadow-none">
             <Header
               bodyLabel="Add a Phone Number to your Account"
-              headerLabel="Add  Phone"
+              headerLabel="Add Phone"
             />
-
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)}>
                 <CardContent>
