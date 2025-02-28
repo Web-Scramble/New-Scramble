@@ -2,7 +2,7 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Header from "@/components/features/auth/header";
 import { authStore } from "@/store/authstore";
-
+import Sidebar from "@/components/features/home/Sidebar";
 
 
 export default function Dashboard() {
@@ -10,6 +10,7 @@ export default function Dashboard() {
 
   return (
     <div className="flex h-screen bg-primary-background p-4 gap-4">
+      <Sidebar/>
       <div className="flex-1 flex flex-col">
         {/* Dashboard Header */}
         <div className="mb-6">
