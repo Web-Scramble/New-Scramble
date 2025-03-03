@@ -9,27 +9,56 @@ import {
   MoreHorizontal, 
   CalendarClock, 
   Clock, 
-  ThumbsUp, 
-  MessageSquare, 
+  ChartColumnBig, 
   Share2, 
   Play, 
-  DollarSign,
+  MessagesSquare,
   FileText
 } from 'lucide-react';
+import { CommentModal } from './comment_modal';
+import { User } from '@/types/authentication';
 
-const AvatarGroup = ({ users, count, onAddClick }) => {
+type AvatarGroupProps ={
+    users:User[];
+    count:number;
+    onAddClick:()=>void
+}
+export interface ChallengeCardProps {
+    user: User;
+    date: string;
+    title: string;
+    status: string;
+    description: string;
+    tags: string[];
+    media: any;
+    // media: Media;
+    // reviewers: ReviewersParticipants;
+    reviewers: User[];
+    participants: User[];
+    // participants: ReviewersParticipants;
+    endDate: string;
+    timing: string;
+    reward: number;
+    onFollowClick: () => void;
+    onMenuClick: () => void;
+    onJoinClick: () => void;
+    onLikeClick: () => void;
+    onCommentClick: () => void;
+    onShareClick: () => void;
+  }
+const AvatarGroup = ({ users, count, onAddClick }:AvatarGroupProps) => {
   return (
     <div className="flex items-center">
       <div className="flex -space-x-3">
         {users.slice(0, 2).map((user, index) => (
           <Avatar key={index} className="border-2 border-white w-8 h-8">
-            <AvatarImage src={user.avatar} alt={user.name} />
-            <AvatarFallback>{user.name[0]}</AvatarFallback>
+            <AvatarImage src={user.profile_picture||"images"} alt={user.username} />
+            <AvatarFallback>{user.username[0]}</AvatarFallback>
           </Avatar>
         ))}
       </div>
       {count > 0 && (
-        <span className="text-sm text-blue-500 font-medium ml-1">+{count}</span>
+        <span className="text-xs text-blue-500 bg-blue-50 w-8 h-8 border-2 border-white rounded-full font-medium -space-x-7 flex items-center">+{count}</span>
       )}
       <Button variant="outline" size="sm" className="ml-2 rounded-full w-7 h-7 p-0 border-dashed border-gray-300">
         <Plus className="h-4 w-4 text-gray-500" onClick={onAddClick} />
@@ -57,32 +86,35 @@ const AvatarGroup = ({ users, count, onAddClick }) => {
   onLikeClick,
   onCommentClick,
   onShareClick
-}) => {
-  return (
-    <Card className="w-full max-w-4xl border rounded-lg overflow-hidden">
+}:ChallengeCardProps) => {
+    const [isOpen, setIsOpen] = useState(true);
+
+    return (
+        <>
+    <Card className="w-full max-w-4xl shadow-none rounded-lg overflow-hidden border-none">
       {/* Card Header */}
       <CardHeader className="flex flex-row items-center justify-between p-4 pb-2">
         <div className="flex items-center">
           <div className="relative">
             <Avatar className="h-12 w-12 mr-3">
-              <AvatarImage src={user.avatar} alt={user.name} />
-              <AvatarFallback>{user.name[0]}</AvatarFallback>
+              <AvatarImage src={user.profile_picture||"images"} alt={user.username} />
+              <AvatarFallback>{user.username[0]}</AvatarFallback>
             </Avatar>
             <div className="absolute bottom-0 left-0 w-2 h-2 bg-blue-500 rounded-full border-2 border-white"></div>
           </div>
           <div>
-            <h3 className="font-semibold text-lg text-gray-800">{user.name}</h3>
-            <p className="text-sm text-gray-500">{date}</p>
+            <h3 className="font-semibold text-lg text-gray-800">{user.username}</h3>
+            <p className="text-sm text-gray-500 font-normal">{date}</p>
           </div>
         </div>
         <div className="flex items-center gap-2">
-          <Button variant="outline" className="border text-blue-500 hover:bg-blue-50 px-4">
+          <Button variant="ghost" className=" text-blue-500  px-4">
             <Plus className="h-4 w-4 mr-1" />
             Follow
           </Button>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon" className="rounded-full h-10 w-10">
+              <Button variant="ghost" size="icon" className="border rounded-full h-10 w-10">
                 <MoreHorizontal className="h-5 w-5 text-gray-400" />
               </Button>
             </DropdownMenuTrigger>
@@ -99,17 +131,17 @@ const AvatarGroup = ({ users, count, onAddClick }) => {
       <CardContent className="p-4">
         {/* Challenge Title & Status */}
         <div className="flex items-center mb-3">
-          <h2 className="text-2xl font-semibold text-gray-800 mr-3">{title}</h2>
+          <h2 className="text-lg font-semibold text-gray-500 mr-3">{title}</h2>
           <Badge className="bg-green-100 text-green-600 hover:bg-green-100 px-3">{status}</Badge>
         </div>
 
         {/* Challenge Description */}
-        <p className="text-gray-600 mb-3">{description}</p>
+        <p className="text-gray-400 mb-3 text-xs text-left">{description}</p>
 
         {/* Challenge Tags */}
         <div className="flex flex-wrap gap-2 mb-5">
           {tags.map((tag, index) => (
-            <span key={index} className="text-blue-500 hover:underline cursor-pointer">
+            <span key={index} className="text-blue-600 hover:underline cursor-pointer">
               #{tag}
             </span>
           ))}
@@ -154,7 +186,7 @@ const AvatarGroup = ({ users, count, onAddClick }) => {
         <div className="flex flex-wrap justify-between items-center border-t border-b py-4">
           <div className="flex gap-6">
             <div>
-              <p className="text-sm text-gray-500 mb-2">Reviewers</p>
+              <p className="text-sm text-left font-bold text-gray-500 mb-2">Reviewers</p>
               <AvatarGroup 
                 users={reviewers.users} 
                 count={reviewers.count} 
@@ -162,7 +194,7 @@ const AvatarGroup = ({ users, count, onAddClick }) => {
               />
             </div>
             <div>
-              <p className="text-sm text-gray-500 mb-2">Participants</p>
+              <p className="text-sm text-left font-bold text-gray-500 mb-2">Participants</p>
               <AvatarGroup 
                 users={participants.users} 
                 count={participants.count} 
@@ -170,14 +202,14 @@ const AvatarGroup = ({ users, count, onAddClick }) => {
               />
             </div>
             <div>
-              <p className="text-sm text-gray-500 mb-2">End date</p>
+              <p className="text-sm text-left font-bold text-gray-500 mb-2">End date</p>
               <div className="flex items-center">
                 <CalendarClock className="h-4 w-4 text-gray-500 mr-1" />
                 <span className="text-sm">{endDate}</span>
               </div>
             </div>
             <div>
-              <p className="text-sm text-gray-500 mb-2">Timing</p>
+              <p className="text-sm text-left font-bold text-gray-500 mb-2">Timing</p>
               <div className="flex items-center">
                 <Clock className="h-4 w-4 text-gray-500 mr-1" />
                 <span className="text-sm">{timing}</span>
@@ -185,7 +217,7 @@ const AvatarGroup = ({ users, count, onAddClick }) => {
             </div>
           </div>
           <div>
-            <p className="text-sm text-gray-500 mb-2">Reward</p>
+            <p className="text-sm text-left font-bold text-gray-500 mb-2">Reward</p>
             <div className="flex items-center">
               <span className="text-2xl font-bold text-blue-500">${reward}</span>
               <Button variant="outline" size="sm" className="ml-2 rounded-full w-7 h-7 p-0 border-dashed border-gray-300">
@@ -199,12 +231,12 @@ const AvatarGroup = ({ users, count, onAddClick }) => {
       {/* Card Footer */}
       <CardFooter className="px-4 py-3 flex justify-between">
         <div className="flex items-center gap-6">
-          <Button variant="ghost" className="flex items-center gap-1 p-0 h-auto" onClick={onLikeClick}>
-            <ThumbsUp className="h-5 w-5 text-gray-500" />
+          <Button variant="ghost" className="flex items-center gap-1 p-0 h-auto" onClick={()=>setIsOpen(true)}>
+            <MessagesSquare className="h-5 w-5 text-gray-500" />
             <span className="text-gray-500">15</span>
           </Button>
           <Button variant="ghost" className="flex items-center gap-1 p-0 h-auto" onClick={onCommentClick}>
-            <MessageSquare className="h-5 w-5 text-gray-500" />
+            <ChartColumnBig className="h-5 w-5 text-gray-500" />
             <span className="text-gray-500">56</span>
           </Button>
           <Button variant="ghost" className="flex items-center p-0 h-auto" onClick={onShareClick}>
@@ -216,27 +248,8 @@ const AvatarGroup = ({ users, count, onAddClick }) => {
         </Button>
       </CardFooter>
     </Card>
+    <CommentModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
+    </>
+
   );
 };
-
-const ChallengeCardExample = () => {
-  const handleAction = (action) => {
-    console.log(`${action} clicked`);
-  };
-
-
-
-  return (
-    <ChallengeCard
-      {...mockData}
-      onFollowClick={() => handleAction('Follow')}
-      onMenuClick={() => handleAction('Menu')}
-      onJoinClick={() => handleAction('Join')}
-      onLikeClick={() => handleAction('Like')}
-      onCommentClick={() => handleAction('Comment')}
-      onShareClick={() => handleAction('Share')}
-    />
-  );
-};
-
-export default ChallengeCardExample;

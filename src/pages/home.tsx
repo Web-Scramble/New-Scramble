@@ -12,7 +12,7 @@ export default function Dashboard() {
   return (
     <main className="flex h-full gap-4 w-full bg-[#F9F9FA]">
       <Sidebar />
-      <section className="w-full flex flex-col gap-2">
+      <section className="w-full flex flex-col gap-2 ml-68">
         <SearchHeader />
         <section className="flex gap-4">
           <section className="w-full">

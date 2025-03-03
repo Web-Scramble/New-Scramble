@@ -1,7 +1,7 @@
 export const mockChallengeData = {
     user: {
-      name: 'User Name',
-      avatar: '/api/placeholder/50/50'
+      username: 'User Name',
+      profile_picture: '/images/Avatar.png'
     },
     date: '12 April at 09:28',
     title: 'Challenge Title',
@@ -20,15 +20,15 @@ export const mockChallengeData = {
     },
     reviewers: {
       users: [
-        { name: 'User 1', avatar: '/api/placeholder/50/50' },
-        { name: 'User 2', avatar: '/api/placeholder/50/50' }
+        { username: 'User 1', profile_picture: '/images/Avatar1.png' },
+        { username: 'User 2', profile_picture: '/images/Avatar2.png' }
       ],
       count: 35
     },
     participants: {
       users: [
-        { name: 'User 3', avatar: '/api/placeholder/50/50' },
-        { name: 'User 4', avatar: '/api/placeholder/50/50' }
+        { username: 'User 3', profile_picture: '/images/Avatar1.png' },
+        { username: 'User 4', profile_picture: '/images/Avatar2.png' }
       ],
       count: 95
     },

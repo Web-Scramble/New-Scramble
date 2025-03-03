@@ -82,7 +82,7 @@ export default function Sidebar() {
   const [openChallenges, setOpenChallenges] = useState(false)
 
   return (
-    <aside className="flex flex-col w-64 h-full bg-white border-r border-gray-200">
+    <aside className="flex flex-col w-64 h-screen bg-white border-r fixed border-gray-200">
       <div className="p-4">
         <h1 className="text-2xl font-bold text-black text-left">Scramble</h1>
       </div>

@@ -10,13 +10,13 @@ export default function SearchHeader() {
         <h2 className="text-2xl font-semibold text-black font-grotesk">
           Welcome, Nde
         </h2>
-        <nav className="mt-1 text-sm text-gray-500">
-          Pages → <span className="text-blue-500">Home</span>
+        <nav className="mt-1 text-sm text-gray-300 text-left">
+          Pages → <span className="text-blue-400">Home</span>
         </nav>
       </div>
 
-      <div className="flex items-center space-x-1 p-2 rounded-md bg-white">
-        <div className="relative">
+      <div className="flex items-center space-x-1 p-2 rounded-md bg-white w-1/2">
+        <div className="relative flex-1">
           <SearchBar/>
         </div>
 
@@ -26,7 +26,7 @@ export default function SearchHeader() {
 
         <Button variant="ghost" className="flex items-center space-x-2">
           <Avatar className="h-8 w-8">
-            <AvatarImage src="/images/user-profile.jpg" alt="@nde" />
+            <AvatarImage src="/images/Avatar.png" alt="@nde" />
             <AvatarFallback>ND</AvatarFallback>
           </Avatar>
           <ChevronDown className="h-4 w-4" />
