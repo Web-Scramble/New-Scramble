@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -8,15 +8,15 @@ import {
   Plus, 
   MoreHorizontal, 
   CalendarClock, 
-  Clock, 
-  ChartColumnBig, 
   Share2, 
   Play, 
-  MessagesSquare,
-  FileText
+  FileText,
+  DollarSignIcon
 } from 'lucide-react';
 import { CommentModal } from './comment_modal';
 import { User } from '@/types/authentication';
+import  Comments from "@/assets/comments.svg"
+import Leaderboard from "@/assets/leaderboard.svg"
 
 type AvatarGroupProps ={
     users:User[];
@@ -30,12 +30,15 @@ export interface ChallengeCardProps {
     status: string;
     description: string;
     tags: string[];
-    media: any;
-    // media: Media;
-    // reviewers: ReviewersParticipants;
-    reviewers: User[];
-    participants: User[];
-    // participants: ReviewersParticipants;
+    media: Media;
+    reviewers: {
+        users:User[];
+        count:number;
+    };
+    participants: {
+        users:User[];
+        count:number;
+    };
     endDate: string;
     timing: string;
     reward: number;
@@ -45,6 +48,17 @@ export interface ChallengeCardProps {
     onLikeClick: () => void;
     onCommentClick: () => void;
     onShareClick: () => void;
+  }
+  export interface MediaFile {
+    name: string;
+  }
+  
+  export interface Media {
+    images: string[];
+    video: {
+      thumbnail: string;
+    };
+    files: MediaFile[];
   }
 const AvatarGroup = ({ users, count, onAddClick }:AvatarGroupProps) => {
   return (
@@ -58,10 +72,10 @@ const AvatarGroup = ({ users, count, onAddClick }:AvatarGroupProps) => {
         ))}
       </div>
       {count > 0 && (
-        <span className="text-xs text-blue-500 bg-blue-50 w-8 h-8 border-2 border-white rounded-full font-medium -space-x-7 flex items-center">+{count}</span>
+        <span className=" relative -left-3 text-xs text-blue-500 bg-blue-50 w-9 h-9 border-4 border-white rounded-full font-medium flex items-center">+{count}</span>
       )}
-      <Button variant="outline" size="sm" className="ml-2 rounded-full w-7 h-7 p-0 border-dashed border-gray-300">
-        <Plus className="h-4 w-4 text-gray-500" onClick={onAddClick} />
+      <Button variant="outline" size="sm" className="rounded-full w-7 h-7 p-0 border-dashed border-blue-300">
+        <Plus className="h-4 w-4 text-blue-300" onClick={onAddClick} />
       </Button>
     </div>
   );
@@ -80,10 +94,10 @@ const AvatarGroup = ({ users, count, onAddClick }:AvatarGroupProps) => {
   endDate, 
   timing, 
   reward,
-  onFollowClick,
-  onMenuClick,
+//   onFollowClick,
+//   onMenuClick,
   onJoinClick,
-  onLikeClick,
+//   onLikeClick,
   onCommentClick,
   onShareClick
 }:ChallengeCardProps) => {
@@ -150,7 +164,7 @@ const AvatarGroup = ({ users, count, onAddClick }:AvatarGroupProps) => {
         {/* Media Section */}
         <div className="grid grid-cols-12 gap-3 mb-6">
           {/* Left media section - 2 items */}
-          <div className="col-span-4 flex flex-col gap-3">
+          <div className="col-span-3 flex flex-col gap-3">
             <div className="h-40 bg-gray-100 rounded-lg overflow-hidden">
               <img src={media.images[0]} alt="Media content" className="w-full h-full object-cover" />
             </div>
@@ -160,7 +174,7 @@ const AvatarGroup = ({ users, count, onAddClick }:AvatarGroupProps) => {
           </div>
           
           {/* Center - Video */}
-          <div className="col-span-5 relative rounded-lg overflow-hidden">
+          <div className="col-span-6 relative rounded-lg overflow-hidden">
             <img src={media.video.thumbnail} alt="Video thumbnail" className="w-full h-full object-cover" />
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="rounded-full bg-white/80 p-4 backdrop-blur-sm">
@@ -172,7 +186,7 @@ const AvatarGroup = ({ users, count, onAddClick }:AvatarGroupProps) => {
           {/* Right - PDF files */}
           <div className="col-span-3 flex flex-col gap-3">
             {media.files.map((file, index) => (
-              <div key={index} className="border rounded-lg p-4 flex flex-col items-center justify-center h-40">
+              <div key={index} className="border-2 border-blue-300 rounded-lg p-4 flex flex-col items-center justify-center h-40">
                 <div className="bg-blue-100 p-2 rounded-lg mb-2">
                   <FileText className="h-6 w-6 text-blue-500" />
                 </div>
@@ -202,26 +216,28 @@ const AvatarGroup = ({ users, count, onAddClick }:AvatarGroupProps) => {
               />
             </div>
             <div>
-              <p className="text-sm text-left font-bold text-gray-500 mb-2">End date</p>
-              <div className="flex items-center">
+              <p className="flex items-center text-sm text-left font-bold text-gray-500 mb-2">
                 <CalendarClock className="h-4 w-4 text-gray-500 mr-1" />
-                <span className="text-sm">{endDate}</span>
+                End date</p>
+              <div className="flex items-end mt-4">
+                <span className="text-sm text-gray-400">{endDate}</span>
               </div>
             </div>
             <div>
               <p className="text-sm text-left font-bold text-gray-500 mb-2">Timing</p>
-              <div className="flex items-center">
-                <Clock className="h-4 w-4 text-gray-500 mr-1" />
-                <span className="text-sm">{timing}</span>
+              <div className="flex items-end mt-4">
+                <span className="text-sm text-gray-400">{timing}</span>
               </div>
             </div>
           </div>
           <div>
-            <p className="text-sm text-left font-bold text-gray-500 mb-2">Reward</p>
+            <p className="flex items- justify-end text-sm text-right font-bold text-gray-500 mb-2">
+                <DollarSignIcon className="h-4 w-4 text-gray-500" />
+                Reward</p>
             <div className="flex items-center">
-              <span className="text-2xl font-bold text-blue-500">${reward}</span>
-              <Button variant="outline" size="sm" className="ml-2 rounded-full w-7 h-7 p-0 border-dashed border-gray-300">
-                <Plus className="h-4 w-4 text-gray-500" />
+              <span className="text-2xl font-bold text-blue-300">${reward}</span>
+              <Button variant="outline" size="sm" className="ml-2 rounded-full w-7 h-7 p-0 border-dashed border-blue-300">
+                <Plus className="h-4 w-4 text-blue-300" />
               </Button>
             </div>
           </div>
@@ -232,14 +248,15 @@ const AvatarGroup = ({ users, count, onAddClick }:AvatarGroupProps) => {
       <CardFooter className="px-4 py-3 flex justify-between">
         <div className="flex items-center gap-6">
           <Button variant="ghost" className="flex items-center gap-1 p-0 h-auto" onClick={()=>setIsOpen(true)}>
-            <MessagesSquare className="h-5 w-5 text-gray-500" />
+            {/* <MessagesSquare className="h-5 w-5 text-gray-500" /> */}
+            <Comments />
             <span className="text-gray-500">15</span>
           </Button>
           <Button variant="ghost" className="flex items-center gap-1 p-0 h-auto" onClick={onCommentClick}>
-            <ChartColumnBig className="h-5 w-5 text-gray-500" />
+            <Leaderboard  />
             <span className="text-gray-500">56</span>
           </Button>
-          <Button variant="ghost" className="flex items-center p-0 h-auto" onClick={onShareClick}>
+          <Button variant="ghost" className="flex items-center p-0 h-auto " onClick={onShareClick}>
             <Share2 className="h-5 w-5 text-gray-500" />
           </Button>
         </div>

@@ -10,7 +10,7 @@ export default function SearchHeader() {
         <h2 className="text-2xl font-semibold text-black font-grotesk">
           Welcome, Nde
         </h2>
-        <nav className="mt-1 text-sm text-gray-300 text-left">
+        <nav className="mt-1 text-sm text-gray-400 text-left">
           Pages → <span className="text-blue-400">Home</span>
         </nav>
       </div>

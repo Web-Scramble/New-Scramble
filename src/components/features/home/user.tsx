@@ -6,7 +6,7 @@ export const UserCard = ({ user, rightIcon: RightIcon, onClick }) => {
     <div className="flex items-center justify-between py-3">
       <div className="flex items-center gap-2">
         <Avatar className="h-12 w-12">
-          <AvatarImage src={user.avatar} alt={user.name} />
+          <AvatarImage src={"/images/Avatar3.png"} alt={user.name} />
           <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
         </Avatar>
         <div className="flex flex-col">

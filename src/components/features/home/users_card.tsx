@@ -1,6 +1,5 @@
-import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ChevronRight, UserPlus } from 'lucide-react';
+import { UserPlus } from 'lucide-react';
 import { UserCard } from './user';
 
 // Main 

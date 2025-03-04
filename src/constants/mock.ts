@@ -9,9 +9,9 @@ export const mockChallengeData = {
     description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse efficitur, lacus at elementum mollis, metus quam mattis nisi, sit amet elementum elit massa at libero. Cras sem eros, egestas quis porttitor id, lobortis sit amet mi. Vivamus semper mi tortor, vitae finibus elit porttitor sed. Sed eget mattis arcu, sed tincidunt enim?',
     tags: ['Category', 'Lorem', 'ipsum', 'consectetur', 'adipiscing', 'elit'],
     media: {
-      images: ['/api/placeholder/300/300', '/api/placeholder/300/300'],
+      images: ['/images/image.png', '/images/image2.png'],
       video: {
-        thumbnail: '/api/placeholder/400/320'
+        thumbnail: '/images/thumbnail.png'
       },
       files: [
         { name: 'The fundamentals of economics by Vindick.pdf' },
