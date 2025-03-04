@@ -4,44 +4,43 @@ import { UserCard } from './user';
 
 // Main 
 const SuggestedUsers = () => {
-  // Sample user data
   const users = [
     {
       id: 1,
-      name: "User Name",
-      followers: "2.3k",
-      following: 400,
-      challenges: 80,
-      avatar: "/api/placeholder/50/50"
+      username: "User ",
+      followers_count: 2.3,
+      followings_count: 400,
+    //   challenges: 80,
+      profile_picture: "/api/placeholder/50/50"
     },
     {
       id: 2,
-      name: "User Name",
-      followers: "2.3k",
-      following: 400,
-      challenges: 80,
-      avatar: "/api/placeholder/50/50"
+      username: "User ",
+      followers_count: 2.3,
+      followings_count: 400,
+    //   challenges: 80,
+      profile_picture: "/api/placeholder/50/50"
     },
     {
       id: 3,
-      name: "User Name",
-      followers: "2.3k",
-      following: 400,
-      challenges: 80,
-      avatar: "/api/placeholder/50/50"
+      username: "User ",
+      followers_count: 2.3,
+      followings_count: 400,
+    //   challenges: 80,
+      profile_picture: "/images/Avatar2.png"
     },
     {
       id: 4,
-      name: "User Name",
-      followers: "2.3k",
-      following: 400,
-      challenges: 80,
-      avatar: "/api/placeholder/50/50"
+      username: "User ",
+      followers_count: 2.3,
+      followings_count: 400,
+    //   challenges: 80,
+      profile_picture: "/api/placeholder/50/50"
     }
   ];
 
-  const handleUserClick = (user) => {
-    console.log("User clicked:", user);
+  const handleUserClick = () => {
+    console.log("User clicked:", );
   };
 
   const handleSeeAllClick = () => {
@@ -66,7 +65,7 @@ const SuggestedUsers = () => {
             <UserCard
               key={user.id}
               user={user}
-              rightIcon={UserPlus}
+              rightIcon={<UserPlus className="h-5 w-5" />}
               onClick={handleUserClick}
             />
           ))}

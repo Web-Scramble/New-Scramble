@@ -101,7 +101,7 @@ const AvatarGroup = ({ users, count, onAddClick }:AvatarGroupProps) => {
   onCommentClick,
   onShareClick
 }:ChallengeCardProps) => {
-    const [isOpen, setIsOpen] = useState(true);
+    const [isOpen, setIsOpen] = useState(false);
 
     return (
         <>
@@ -114,7 +114,7 @@ const AvatarGroup = ({ users, count, onAddClick }:AvatarGroupProps) => {
               <AvatarImage src={user.profile_picture||"images"} alt={user.username} />
               <AvatarFallback>{user.username[0]}</AvatarFallback>
             </Avatar>
-            <div className="absolute bottom-0 left-0 w-2 h-2 bg-blue-500 rounded-full border-2 border-white"></div>
+            <div className="relative bottom-3 left-8 w-3 h-3 bg-blue-500 rounded-full border-2 border-white"></div>
           </div>
           <div>
             <h3 className="font-semibold text-lg text-gray-800">{user.username}</h3>

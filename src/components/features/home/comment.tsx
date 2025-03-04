@@ -2,7 +2,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { User } from '@/types/authentication';
 export interface CommentProps {
-    user: User;
+    user: Pick<User,"username"|"profile_picture">;
     content: string;
     time: string;
     replyCount?: number;
@@ -13,8 +13,8 @@ export const Comment = ({ user, content, time, replyCount, isCurrentUser = false
     <div className="py-3">
       <div className="flex gap-3 mb-1">
         <Avatar className="h-10 w-10">
-          <AvatarImage src={user.profile_picture as string} alt={user.username} />
-          <AvatarFallback>{user.username[0]}</AvatarFallback>
+          <AvatarImage src={"/images/Avatar3.png"} alt={user.username} />
+          <AvatarFallback>{user.username[0] }</AvatarFallback>
         </Avatar>
         <div className="flex-1">
           <div className={`p-3 rounded-lg ${isCurrentUser ? 'bg-blue-50 ml-auto' : 'bg-gray-50'}`}>
