@@ -17,6 +17,7 @@ import { CommentModal } from './comment_modal';
 import { User } from '@/types/authentication';
 import  Comments from "@/assets/comments.svg"
 import Leaderboard from "@/assets/leaderboard.svg"
+import AddParticipantsModal from './add_participant_modal';
 
 type AvatarGroupProps ={
     users:User[];
@@ -74,8 +75,8 @@ const AvatarGroup = ({ users, count, onAddClick }:AvatarGroupProps) => {
       {count > 0 && (
         <span className=" relative -left-3 text-xs text-blue-500 bg-blue-50 w-9 h-9 border-4 border-white rounded-full font-medium flex items-center">+{count}</span>
       )}
-      <Button variant="outline" size="sm" className="rounded-full w-7 h-7 p-0 border-dashed border-blue-300">
-        <Plus className="h-4 w-4 text-blue-300" onClick={onAddClick} />
+      <Button variant="outline" size="sm" className="rounded-full w-7 h-7 p-0 border-dashed border-blue-300" onClick={onAddClick}>
+        <Plus className="h-4 w-4 text-blue-300"  />
       </Button>
     </div>
   );
@@ -102,6 +103,7 @@ const AvatarGroup = ({ users, count, onAddClick }:AvatarGroupProps) => {
   onShareClick
 }:ChallengeCardProps) => {
     const [isOpen, setIsOpen] = useState(false);
+    const [isParticipantModalOpen, setIsParticipantModalOpen] = useState(false);
 
     return (
         <>
@@ -204,7 +206,7 @@ const AvatarGroup = ({ users, count, onAddClick }:AvatarGroupProps) => {
               <AvatarGroup 
                 users={reviewers.users} 
                 count={reviewers.count} 
-                onAddClick={() => console.log('Add reviewer')} 
+                onAddClick={() => setIsParticipantModalOpen(true)} 
               />
             </div>
             <div>
@@ -266,6 +268,8 @@ const AvatarGroup = ({ users, count, onAddClick }:AvatarGroupProps) => {
       </CardFooter>
     </Card>
     <CommentModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
+    <AddParticipantsModal isOpen={isParticipantModalOpen} onClose={() => setIsParticipantModalOpen(false)} />
+      
     </>
 
   );

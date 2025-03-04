@@ -7,7 +7,6 @@ import { ChallengeCard } from "@/components/features/home/challenge_card";
 import { mockChallengeData } from "@/constants/mock";
 
 export default function Dashboard() {
-  // const {user } = authStore();
 
   return (
     <main className="flex h-full gap-4 w-full bg-[#F9F9FA]">

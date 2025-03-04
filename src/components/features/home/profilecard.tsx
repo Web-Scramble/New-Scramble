@@ -57,7 +57,7 @@ const UserProfile: React.FC<UserProfileProps> = ({
       <div className="mt-8">
         <Button
           variant={"ghost"}
-          className="w-full bg-[#2E77FA]/20 text-primary"
+          className="w-full bg-[#2E77FA]/20 text-primary rounded-sm"
         >
           Update Profile
         </Button>

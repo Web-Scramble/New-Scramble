@@ -36,6 +36,7 @@ const SuggestedUsers = () => {
       followings_count: 400,
     //   challenges: 80,
       profile_picture: "/api/placeholder/50/50"
+      
     }
   ];
 

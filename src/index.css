@@ -124,3 +124,23 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* For Firefox Browser */
+.scrollbar {
+  scrollbar-width: none;
+  scrollbar-color: #c9c8c8 #fff;
+}
+
+
+/* For Chrome, EDGE, Opera, Others */
+.scrollbar::-webkit-scrollbar {
+  width: 10px;
+}
+
+.scrollbar::-webkit-scrollbar-track { 
+  background: #fff;
+}
+
+.scrollbar::-webkit-scrollbar-thumb { 
+  background:#c9c8c8;
+}
