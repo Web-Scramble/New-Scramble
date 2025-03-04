@@ -14,10 +14,14 @@ import {
 import Header from "@/components/features/auth/header";
 import { signupSchema } from "@/schema/auth_schemas";
 import Sidebar from "@/components/features/auth/sidebar";
-import { useState } from "react";
+import { useState} from "react";
 import { CountrySelect } from "@/components/features/auth/country_select";
 import { useSendOtp } from "@/hooks/auth/useSendOtp";
-import { signInWithPopup, GoogleAuthProvider, FacebookAuthProvider } from "firebase/auth";
+import {
+  signInWithPopup,
+  GoogleAuthProvider,
+  FacebookAuthProvider,
+} from "firebase/auth";
 import { auth } from "@/services/firebase";
 import { useSocialAuth } from "@/hooks/auth/useSocialAuth";
 import { authStore } from "@/store/authstore";
@@ -80,9 +84,9 @@ export default function Signup() {
               updateToken(data.token);
               updateUser(data.user);
               if (!data.user.phone) {
-                navigate(`/verify_otp/`)
+                navigate(`/verify_otp/`);
               }
-              navigate(`/home`)
+              navigate(`/home`);
             },
           }
         )
@@ -119,9 +123,9 @@ export default function Signup() {
               updateToken(data.token);
               updateUser(data.user);
               if (!data.user.phone) {
-                navigate(`/verify_otp/`)
+                navigate(`/verify_otp/`);
               }
-              navigate(`/home`)
+              navigate(`/home`);
             },
           }
         )
@@ -134,16 +138,16 @@ export default function Signup() {
 
   async function signInWithTwitter() {
     try {
-      console.log("twitter")
+      console.log("twitter");
     } catch (error) {
       console.error("Twitter sign in error:", error);
     }
   }
 
   return (
-    <div className="flex h-screen bg-primary-background p-4 rounded-xl gap-4">
+    <div className="flex flex-col md:flex-row h-full lg:h-screen bg-primary-background p-4 rounded-xl gap-4">
       <Sidebar />
-      <div className="flex w-full flex-col items-center justify-center p-8 bg-white rounded-xl">
+      <div className="flex w-full flex-col items-center justify-center md:p-8 bg-white rounded-xl">
         <Card className="w-full max-w-sm border-none shadow-none">
           <Header
             bodyLabel="Enter your Phone number to sign in or create your account"
@@ -157,7 +161,7 @@ export default function Signup() {
                   name="phone"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-left text-black">
+                      <FormLabel className="text-left text-black text-sm md:text-base">
                         Phone Number
                       </FormLabel>
                       <FormControl>
@@ -170,7 +174,7 @@ export default function Signup() {
                             type="text"
                             placeholder="Enter Number"
                             {...field}
-                            className="w-full px-2 py-1 border-0 focus:outline-none focus:ring-0 text-base font-normal"
+                            className="w-full px-2 py-1 border-0 focus:outline-none focus:ring-0 text-sm md:text-base font-normal"
                           />
                         </div>
                       </FormControl>
@@ -196,17 +200,17 @@ export default function Signup() {
                 className="bg-gray-500 w-full"
                 style={{ height: "1px" }}
               ></div>
-              <div className="w-full">Or sign up with</div>
+              <div className="w-full text-[10px] sm:text-base lg:text-base">Or sign up with</div>
               <div
                 className="bg-gray-500 w-full"
                 style={{ height: "1px" }}
               ></div>
             </div>
 
-            <div className="w-full flex flex-row justify-between">
+            <div className="w-full flex flex-row justify-between gap-2">
               <Button
                 variant="outline"
-                className="border-2 border-primary-border p-6 px-8"
+                className="border-2 border-primary-border p-6 sm:px-8"
                 onClick={SignupWithGoogle}
               >
                 <img
@@ -218,7 +222,7 @@ export default function Signup() {
               </Button>
               <Button
                 variant="outline"
-                className="border-2 border-primary-border p-6 px-8"
+                className="border-2 border-primary-border p-6 sm:px-8"
                 onClick={signInWithFacebook}
               >
                 <img
@@ -230,7 +234,7 @@ export default function Signup() {
               </Button>
               <Button
                 variant="outline"
-                className="border-2 border-primary-border p-6 px-8"
+                className="border-2 border-primary-border p-6 sm:px-8"
                 onClick={signInWithTwitter}
               >
                 <img
