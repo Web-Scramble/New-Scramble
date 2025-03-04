@@ -34,5 +34,5 @@ export const mockChallengeData = {
     },
     endDate: '15/02/2025 - 2PM',
     timing: '1 Hour',
-    reward: '400'
+    reward: 400
   };

@@ -20,12 +20,12 @@ import Leaderboard from "@/assets/leaderboard.svg"
 import AddParticipantsModal from './add_participant_modal';
 
 type AvatarGroupProps ={
-    users:User[];
+    users:Pick<User,"username"|"profile_picture">[];
     count:number;
     onAddClick:()=>void
 }
 export interface ChallengeCardProps {
-    user: User;
+    user: Pick<User,"username"|"profile_picture">;
     date: string;
     title: string;
     status: string;
@@ -33,11 +33,11 @@ export interface ChallengeCardProps {
     tags: string[];
     media: Media;
     reviewers: {
-        users:User[];
+        users:Pick<User,"username"|"profile_picture">[];
         count:number;
     };
     participants: {
-        users:User[];
+        users:Pick<User,"username"|"profile_picture">[];
         count:number;
     };
     endDate: string;
