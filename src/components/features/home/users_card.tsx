@@ -52,7 +52,7 @@ const SuggestedUsers = () => {
     <section className="w-full max-w-md border rounded-lg bg-white">
       <div className="p-5">
         <div className="flex items-center justify-between mb-2">
-          <h2 className="text-2xl font-bold text-gray-800">Suggested Users</h2>
+          <h2 className="text-xl font-bold text-gray-800 font-grotesk">Suggested Users</h2>
           <Button 
             variant="ghost" 
             className="text-gray-500 font-normal"

@@ -5,6 +5,7 @@ import SuggestedUsers from "@/components/features/home/users_card";
 import ChallengeHeader from "@/components/features/home/challengeHeader";
 import { ChallengeCard } from "@/components/features/home/challenge_card";
 import { mockChallengeData } from "@/constants/mock";
+import TrendingChallenges from "@/components/features/home/trending_challenges";
 
 export default function Dashboard() {
 
@@ -36,6 +37,7 @@ export default function Dashboard() {
               imageUrl="/images/Avatar.png"
             />
             <SuggestedUsers />
+            <TrendingChallenges/>
           </section>
         </section>
       </section>

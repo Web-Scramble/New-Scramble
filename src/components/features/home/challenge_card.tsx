@@ -18,6 +18,7 @@ import { User } from '@/types/authentication';
 import  Comments from "@/assets/comments.svg"
 import Leaderboard from "@/assets/leaderboard.svg"
 import AddParticipantsModal from './add_participant_modal';
+import  ShareChallengeModal  from './share_modal';
 
 type AvatarGroupProps ={
     users:Pick<User,"username"|"profile_picture">[];
@@ -100,10 +101,11 @@ const AvatarGroup = ({ users, count, onAddClick }:AvatarGroupProps) => {
   onJoinClick,
 //   onLikeClick,
   onCommentClick,
-  onShareClick
+  // onShareClick
 }:ChallengeCardProps) => {
     const [isOpen, setIsOpen] = useState(false);
     const [isParticipantModalOpen, setIsParticipantModalOpen] = useState(false);
+    const [isShareModalOpen, setIsShareModalOpen] = useState(false);
 
     return (
         <>
@@ -258,7 +260,7 @@ const AvatarGroup = ({ users, count, onAddClick }:AvatarGroupProps) => {
             <Leaderboard  />
             <span className="text-gray-500">56</span>
           </Button>
-          <Button variant="ghost" className="flex items-center p-0 h-auto " onClick={onShareClick}>
+          <Button variant="ghost" className="flex items-center p-0 h-auto " onClick={() => setIsShareModalOpen(true)}>
             <Share2 className="h-5 w-5 text-gray-500" />
           </Button>
         </div>
@@ -269,6 +271,7 @@ const AvatarGroup = ({ users, count, onAddClick }:AvatarGroupProps) => {
     </Card>
     <CommentModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
     <AddParticipantsModal isOpen={isParticipantModalOpen} onClose={() => setIsParticipantModalOpen(false)} />
+    <ShareChallengeModal isOpen={isShareModalOpen} onClose={() => setIsShareModalOpen(false)} />
       
     </>
 

@@ -41,7 +41,7 @@ export const UserCard = ({ user, rightIcon: RightIcon, onClick,role}:UserCardPro
       <Button 
         variant="ghost" 
         size="icon" 
-        className="rounded-full bg-blue-100 text-blue-500 h-10 w-10"
+        className=" bg-blue-100 text-blue-500 h-10 w-10"
         onClick={() => onClick()}
       >
         {RightIcon}
