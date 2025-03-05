@@ -1,4 +1,3 @@
-// import Sidebar from "@/components/features/home/sidebar";
 import Sidebar from "@/components/features/home/sidebar";
 import ProfileCard from "@/components/features/home/profilecard";
 import SearchHeader from "@/components/features/home/search_header";
