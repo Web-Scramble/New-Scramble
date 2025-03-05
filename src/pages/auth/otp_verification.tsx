@@ -13,7 +13,7 @@ import {
 import { InputOTP, InputOTPSlot } from "@/components/ui/input-otp";
 import Header from "@/components/features/auth/header";
 import { otpSchema } from "@/schema/auth_schemas";
-import Sidebar from "@/components/features/auth/sidebar";
+import Sidebar from "@/components/features/auth/auth-sidebar";
 import { useEffect, useState } from "react";
 import { useValidateOtp } from "@/hooks/auth/useValidateOtp";
 import { useSendOtp } from "@/hooks/auth/useSendOtp";

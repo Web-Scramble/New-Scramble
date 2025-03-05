@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/form";
 import Header from "@/components/features/auth/header";
 import { accountSchema } from "@/schema/auth_schemas";
-import Sidebar from "@/components/features/auth/sidebar";
+import Sidebar from "@/components/features/auth/auth-sidebar";
 import { useCreateUser } from "@/hooks/auth/useCreateUser";
 import { useState } from "react";
 import { Check, ArrowRight } from "lucide-react";
@@ -102,9 +102,11 @@ export default function CreateAccount() {
                       <FormItem>
                         <FormLabel className="text-left">Enter Email</FormLabel>
                         <FormControl>
-                          <Input placeholder="Enter your Email" {...field} 
-                              className="text-sm md:text-base"
-                              />
+                          <Input
+                            placeholder="Enter your Email"
+                            {...field}
+                            className="text-sm md:text-base"
+                          />
                         </FormControl>
                         <FormMessage className="text-xs" />
                       </FormItem>

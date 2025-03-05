@@ -156,7 +156,6 @@ export default function Sidebar() {
                     "!border-none",
                     "!ring-0",
                     "font-normal",
-                    // isActive && "!text-white hover:!bg-blue-600"
                   )}
                 >
                   <Icon className="mr-2 h-5 w-5" />

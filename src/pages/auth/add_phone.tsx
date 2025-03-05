@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/form";
 import Header from "@/components/features/auth/header";
 import { signupSchema } from "@/schema/auth_schemas";
-import Sidebar from "@/components/features/auth/sidebar";
+import Sidebar from "@/components/features/auth/auth-sidebar";
 import { useCreateUser } from "@/hooks/auth/useCreateUser";
 import { useState } from "react";
 import { Check, ArrowRight } from "lucide-react";

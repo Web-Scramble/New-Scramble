@@ -13,8 +13,8 @@ import {
 } from "@/components/ui/form";
 import Header from "@/components/features/auth/header";
 import { signupSchema } from "@/schema/auth_schemas";
-import Sidebar from "@/components/features/auth/sidebar";
-import { useState} from "react";
+import Sidebar from "@/components/features/auth/auth-sidebar";
+import { useState } from "react";
 import { CountrySelect } from "@/components/features/auth/country_select";
 import { useSendOtp } from "@/hooks/auth/useSendOtp";
 import {
@@ -200,7 +200,9 @@ export default function Signup() {
                 className="bg-gray-500 w-full"
                 style={{ height: "1px" }}
               ></div>
-              <div className="w-full text-[10px] sm:text-base lg:text-base">Or sign up with</div>
+              <div className="w-full text-[10px] sm:text-base lg:text-base">
+                Or sign up with
+              </div>
               <div
                 className="bg-gray-500 w-full"
                 style={{ height: "1px" }}
