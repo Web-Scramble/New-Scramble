@@ -1,4 +1,4 @@
-import Sidebar from "@/components/features/home/sidebar";
+// import Sidebar from "@/components/features/home/sidebar";
 import ProfileCard from "@/components/features/home/profilecard";
 import SearchHeader from "@/components/features/home/search_header";
 import SuggestedUsers from "@/components/features/home/users_card";
@@ -11,7 +11,7 @@ export default function Dashboard() {
 
   return (
     <main className="flex h-full gap-4 w-full bg-[#F9F9FA]">
-      <Sidebar />
+      {/* <Sidebar /> */}
       <section className="flex flex-col gap-2 ml-68">
         <SearchHeader />
         <section className="flex gap-4">
