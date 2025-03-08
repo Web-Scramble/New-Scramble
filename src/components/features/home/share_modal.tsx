@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { SendHorizontal, Clipboard } from "lucide-react";
+import { SendHorizontal} from "lucide-react";
 import { UserCard } from "./user";
+import  Copy from "@/assets/Copy.svg"
+
 
 interface ShareChallengeModalProps {
   isOpen: boolean;
@@ -151,7 +153,7 @@ const ShareChallengeModal = ({ isOpen, onClose }: ShareChallengeModalProps) => {
               className="bg-blue-100 text-blue-500 hover:bg-blue-200"
               onClick={handleCopyLink}
             >
-              {linkCopied ? "Copied!" : "Copy"} <Clipboard/>
+              {linkCopied ? "Copied!" : "Copy"} <Copy/>
             </Button>
           </div>
         </div>

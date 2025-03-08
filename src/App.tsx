@@ -57,7 +57,7 @@ function App() {
         <Route path="/verify_otp/:phone" element={<VerifyOtp />} />
         <Route path="/create_account/:phone" element={<CreateAccount />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/home" element={<Dashboard />} />
+        {/* <Route path="/home" element={<Dashboard />} /> */}
         <Route path="/add_phone" element={<AddPhone />} />
         <Route
           path="/home"

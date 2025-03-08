@@ -1,13 +1,10 @@
 import { useState } from "react"
 import { NavLink } from "react-router"
 import {
-  Home,
-  LayoutGrid,
-  Users,
   Wallet,
-  User,
+  CircleUserRound,
   Bell,
-  FileText,
+  MessageSquareWarning,
   Settings,
   HelpCircle,
   LogOut,
@@ -15,19 +12,27 @@ import {
   ChevronUp,
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { useNavigate } from "react-router";
+import { authStore } from "@/store/authstore";
+import { TOKEN, USER_DATA } from "@/constants/keys";
 import { ScrollArea } from "@/components/ui/scroll-area"
 import {
   Collapsible,
   CollapsibleTrigger,
   CollapsibleContent,
 } from "@/components/ui/collapsible"
+import  Users from "@/assets/users.svg"
+import  Home from "@/assets/home.svg"
+import  Challenge from "@/assets/Challenge.svg"
+
 
 
 import { cn } from "@/lib/utils"
+import { setItemToLocalStorage } from "@/utils/localStorage";
 
 type NavItem = {
   label: string
-  icon: React.ElementType
+  icon: React.ElementType|string;
   to?: string
   subItems?: { label: string; to: string }[]
 }
@@ -40,7 +45,7 @@ const navItems: NavItem[] = [
   },
   {
     label: "Challenges",
-    icon: LayoutGrid,
+    icon: Challenge,
     subItems: [
       { label: "New Challenges", to: "/challenges/new" },
       { label: "All Challenges", to: "/challenges/all" },
@@ -58,7 +63,7 @@ const navItems: NavItem[] = [
   },
   {
     label: "Profile",
-    icon: User,
+    icon: CircleUserRound,
     to: "/profile",
   },
   {
@@ -68,7 +73,7 @@ const navItems: NavItem[] = [
   },
   {
     label: "Report",
-    icon: FileText,
+    icon: MessageSquareWarning,
     to: "/report",
   },
   {
@@ -80,6 +85,31 @@ const navItems: NavItem[] = [
 
 export default function Sidebar() {
   const [openChallenges, setOpenChallenges] = useState(false)
+  const { updateToken, updateUser } = authStore();
+  const navigate = useNavigate();
+  const handleLogOut = ()=>{
+    updateToken("")
+    updateUser({
+      id: "",
+      username: "",
+      email: "",
+      phone:"",
+      balance:0,
+      profile_picture:"",
+      role:"",
+      created_at: "" ,
+      updated_at: "",
+      firebase_uid:"" ,
+      fcm_token: "" ,
+      followers_count:0,
+      is_suspended: false,
+      background_picture:"" ,
+      followings_count: 0,
+    })
+    setItemToLocalStorage(TOKEN,"")
+    setItemToLocalStorage(USER_DATA,"")
+    navigate("/");
+  }
 
   return (
     <aside className="flex flex-col w-64 h-screen bg-white border-r fixed border-gray-200">
@@ -184,10 +214,10 @@ export default function Sidebar() {
         </NavLink>
 
         <NavLink
-          to="/logout"
+          to="/"
           className="block rounded-md transition-colors hover:bg-gray-100 "
         >
-          <Button variant="ghost" className="w-full justify-start text-red-500">
+          <Button variant="ghost" className="w-full justify-start text-red-500" onClick={handleLogOut}>
             <LogOut className="mr-2 h-5 w-5" />
             Logout
           </Button>

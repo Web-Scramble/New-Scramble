@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router";
+import { useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 
@@ -28,7 +28,7 @@ type AddPhoneFormValues = {
 
 export default function AddPhone() {
   const navigate = useNavigate();
-  const { phone } = useParams();
+  // const { phone } = useParams();
   const { updateToken, updateUser, user } = authStore();
   const [success, setSuccess] = useState(false);
   const [selectedDialCode, setSelectedDialCode] = useState("+1");
@@ -41,20 +41,21 @@ export default function AddPhone() {
   const { mutate: createUserMutation, isPending } = useCreateUser();
 
   const onSubmit = (values: AddPhoneFormValues) => {
-    if (!phone) return;
+    // if (!phone) return;
     const payload = {
-      phone: values.phone,
+      phone: `${selectedDialCode}${values.phone}`,
       email: user.email,
       username: user.username,
     };
-
+   console.log(payload)
     createUserMutation(payload, {
       onSuccess: (data) => {
+        console.log(data)
         setSuccess(true);
         setItemToLocalStorage("USER_DATA", data.user);
         setItemToLocalStorage("TOKEN", data.token);
         updateToken(data.token);
-        updateUser(data.user);
+        updateUser({...data.user,profile_picture:user.profile_picture});
       },
     });
   };
@@ -77,7 +78,7 @@ export default function AddPhone() {
 
             <CardFooter className="flex flex-col space-y-4 items-center">
               <Button
-                onClick={() => navigate("/dashboard")}
+                onClick={() => navigate("/home")}
                 className="w-full bg-primary"
               >
                 Continue <ArrowRight className="ml-2 h-4 w-4" />

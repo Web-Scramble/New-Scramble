@@ -6,8 +6,41 @@ import ChallengeHeader from "@/components/features/home/challengeHeader";
 import { ChallengeCard } from "@/components/features/home/challenge_card";
 import { mockChallengeData } from "@/constants/mock";
 import TrendingChallenges from "@/components/features/home/trending_challenges";
+import {useState, useEffect } from 'react';
+import { messaging } from '@/services/firebase';
+import { onMessage } from "firebase/messaging";
+import { requestForToken } from "@/services/request_fcm_token";
+
 
 export default function Dashboard() {
+  const [token, setToken] = useState("");
+  useEffect(() => {
+    const getToken = async () => {
+      const permission = await Notification.requestPermission();
+      if (permission === "granted") {
+        const token = await requestForToken();
+        if (token) {
+          setToken(token);
+        }
+      }
+    };
+   console.log(token)
+  const unsubscribe = onMessage(messaging, ({ notification }) => {
+      if(notification){
+        new Notification(notification.title||"notification title", {
+          body: notification?.body,
+          icon: notification.icon,
+        });
+      } 
+    })
+    
+window.addEventListener("click",getToken,{once:true})
+
+return ()=>{window.removeEventListener("click",getToken)
+   unsubscribe()
+}
+}, []);
+
 
   return (
     <main className="flex h-full gap-4 w-full bg-[#F9F9FA]">
@@ -29,12 +62,6 @@ export default function Dashboard() {
             </section>
           <section className="flex flex-col max-w-2/5 gap-4">
             <ProfileCard
-              name="Alane Johan"
-              username="userhandle"
-              followers="2.3k"
-              following="400"
-              challenges="80"
-              imageUrl="/images/Avatar.png"
             />
             <SuggestedUsers />
             <TrendingChallenges/>

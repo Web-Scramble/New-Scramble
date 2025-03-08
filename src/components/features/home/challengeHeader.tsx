@@ -2,16 +2,20 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Plus } from 'lucide-react';
+import { authStore } from "@/store/authstore";
+
 
 const ChallengeHeader = () => {
+  const {user} = authStore()
+
   return (
     <div className="w-full max-w-4xl">
       {/* Challenge Creation Bar */}
       <div className="flex items-center justify-between bg-white rounded-lg p-3 drop-shadow-sm mb-6">
         <div className="flex items-center flex-1 mr-4">
           <Avatar className="h-12 w-12 mr-4">
-            <AvatarImage src="/images/Avatar.png" alt="User" />
-            <AvatarFallback>U</AvatarFallback>
+          <AvatarImage src={user.profile_picture||""} alt="user avatar" />
+          <AvatarFallback className="capitalize">{user.username.substring(0,2)}</AvatarFallback>
           </Avatar>
           <Input 
             className="border-none bg-gray-100 text-gray-500 h-12 rounded-lg px-4 text-base"

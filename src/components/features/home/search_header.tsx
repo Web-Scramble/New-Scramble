@@ -2,8 +2,12 @@ import {  Bell, ChevronDown } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { SearchBar } from "./search"
+import { authStore } from "@/store/authstore";
+
 
 export default function SearchHeader() {
+    const {user} = authStore()
+  
   return (
     <header className="flex w-full items-center justify-between border-b border-gray-200 p-4 ">
       <div className="flex flex-col">
@@ -26,8 +30,8 @@ export default function SearchHeader() {
 
         <Button variant="ghost" className="flex items-center space-x-2">
           <Avatar className="h-8 w-8">
-            <AvatarImage src="/images/Avatar.png" alt="@nde" />
-            <AvatarFallback>ND</AvatarFallback>
+            <AvatarImage src={user.profile_picture||"not found"} alt={"user profile picture"} />
+            <AvatarFallback className="capitalize">{user.username.substring(0,2)}</AvatarFallback>
           </Avatar>
           <ChevronDown className="h-4 w-4" />
         </Button>

@@ -4,6 +4,7 @@ import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { SendHorizontal } from 'lucide-react';
 import { Comment } from './comment';
+import { authStore } from "@/store/authstore";
 
 type CommentModalProps = {
     isOpen:boolean;
@@ -11,11 +12,13 @@ type CommentModalProps = {
 }
 
 const CommentForm = () => {
+  const {user} = authStore()
+
   return (
     <div className="flex items-center gap-3 pb-4">
       <Avatar className="h-10 w-10">
-        <AvatarImage src="/images/Avatar.png" alt="Your avatar" />
-        <AvatarFallback>Y</AvatarFallback>
+        <AvatarImage src={user.profile_picture||""} alt="user avatar" />
+        <AvatarFallback className="capitalize">{user.username.substring(0,2)}</AvatarFallback>
       </Avatar>
       <div className="flex-1 relative bg-blue-50 rounded-lg overflow-hidden">
         <Input 

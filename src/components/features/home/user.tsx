@@ -33,8 +33,6 @@ export const UserCard = ({ user, rightIcon: RightIcon, onClick,role}:UserCardPro
             <span className='flex flex-row'>{user.followers_count} Followers</span>
             <span className="mx-1">•</span>
             <span>{user.followings_count} Following</span>
-            {/* <span className="mx-1">•</span> */}
-            {/* <span>{user.challenges} Challenges</span> */}
           </div>
         </div>
       </div>

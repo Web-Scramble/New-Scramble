@@ -78,13 +78,14 @@ export default function Signup() {
           },
           {
             onSuccess: (data) => {
-              console.log(data);
+              console.log(data.user);
               setItemToLocalStorage(USER_DATA, data.user);
               setItemToLocalStorage(TOKEN, data.token);
               updateToken(data.token);
               updateUser(data.user);
               if (!data.user.phone) {
-                navigate(`/verify_otp/`);
+                navigate(`/add_phone`);
+                return
               }
               navigate(`/home`);
             },
