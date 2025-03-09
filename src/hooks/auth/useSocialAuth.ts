@@ -9,13 +9,15 @@ export function useSocialAuth() {
   return useMutation({
     mutationFn: (value: SocialAuthPayload) => socialAuth(value),
     onSuccess: () => {
-      toast.success("Login successfully");
+      // toast.success("Login successfully");
     },
     onError: (error: AxiosError) => {
       const errorMessage =
         //@ts-expect-error // Extend axios error object later
-        error.response?.data?.message || "Error Validating OTP";
+        error.response?.data?.message
+      // "Phone number required!"
       console.log(errorMessage);
+      if(errorMessage)
       toast.error(errorMessage);
       //   toast.error(error?.response?.data?.message || "Failed to send OTP");
     },

@@ -15,12 +15,13 @@ import {
 import Header from "@/components/features/auth/header";
 import { signupSchema } from "@/schema/auth_schemas";
 import Sidebar from "@/components/features/auth/auth-sidebar";
-import { useCreateUser } from "@/hooks/auth/useCreateUser";
 import { useState } from "react";
 import { Check, ArrowRight } from "lucide-react";
 import { setItemToLocalStorage } from "@/utils/localStorage";
 import { authStore } from "@/store/authstore";
 import { CountrySelect } from "@/components/features/auth/country_select";
+import { useAddPhone } from "@/hooks/auth/useAddPhone";
+
 
 type AddPhoneFormValues = {
   phone: string;
@@ -29,7 +30,7 @@ type AddPhoneFormValues = {
 export default function AddPhone() {
   const navigate = useNavigate();
   // const { phone } = useParams();
-  const { updateToken, updateUser, user } = authStore();
+  const { updateToken, updateUser, user ,firebase_token} = authStore();
   const [success, setSuccess] = useState(false);
   const [selectedDialCode, setSelectedDialCode] = useState("+1");
 
@@ -38,17 +39,19 @@ export default function AddPhone() {
     defaultValues: { phone: "" },
   });
 
-  const { mutate: createUserMutation, isPending } = useCreateUser();
+  // const { mutate: createUserMutation, isPending } = useCreateUser();
+  const { mutate: addPhoneMutation, isPending } = useAddPhone();
+  console.log(firebase_token)
 
   const onSubmit = (values: AddPhoneFormValues) => {
     // if (!phone) return;
     const payload = {
       phone: `${selectedDialCode}${values.phone}`,
-      email: user.email,
-      username: user.username,
+      // email: user.email,
+      token: firebase_token,
     };
    console.log(payload)
-    createUserMutation(payload, {
+   addPhoneMutation(payload, {
       onSuccess: (data) => {
         console.log(data)
         setSuccess(true);

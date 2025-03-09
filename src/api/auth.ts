@@ -4,6 +4,7 @@ import {
   ValidateOtpPayload,
   CreateUserPayload,
   SocialAuthPayload,
+  SocialAddPhonePayload,
   AuthResponse
  } from "@/types/authentication";
 
@@ -35,5 +36,9 @@ const api = axios.create({
   
   export const socialAuth = async (values: SocialAuthPayload):Promise<AuthResponse> => {
     const response = await api.post("auth/socialAuth", values);
+    return response.data;
+  };
+  export const AddPhone = async (values: SocialAddPhonePayload):Promise<AuthResponse> => {
+    const response = await api.post("auth/social/registerSocialPhone", values);
     return response.data;
   };
