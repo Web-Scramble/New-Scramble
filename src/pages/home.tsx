@@ -10,6 +10,7 @@ import {useState, useEffect } from 'react';
 import { messaging } from '@/services/firebase';
 import { onMessage } from "firebase/messaging";
 import { requestForToken } from "@/services/request_fcm_token";
+import { registerDevice } from "@/api/user";
 
 
 export default function Dashboard() {
@@ -21,10 +22,17 @@ export default function Dashboard() {
         const token = await requestForToken();
         if (token) {
           setToken(token);
+          (async()=>{
+            try {
+              const data = await registerDevice({fcm_token:token})
+              console.log(data)
+            } catch (error) {
+              console.log(error)
+            }
+          })()
         }
       }
     };
-   console.log(token)
   const unsubscribe = onMessage(messaging, ({ notification }) => {
       if(notification){
         new Notification(notification.title||"notification title", {
@@ -36,7 +44,8 @@ export default function Dashboard() {
     
 window.addEventListener("click",getToken,{once:true})
 
-return ()=>{window.removeEventListener("click",getToken)
+return ()=>{
+   window.removeEventListener("click",getToken)
    unsubscribe()
 }
 }, []);

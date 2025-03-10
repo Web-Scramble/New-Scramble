@@ -13,6 +13,7 @@
  export type SocialAuthPayload ={
     token: string;
 }
+
  export type SocialAddPhonePayload ={
     token: string;
     phone:string;
