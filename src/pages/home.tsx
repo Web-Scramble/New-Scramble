@@ -33,6 +33,7 @@ export default function Dashboard() {
         }
       }
     };
+    console.log(token)
   const unsubscribe = onMessage(messaging, ({ notification }) => {
       if(notification){
         new Notification(notification.title||"notification title", {
