@@ -23,7 +23,7 @@ import {
 } from "@/components/ui/collapsible"
 import  Users from "@/assets/users.svg"
 import  Home from "@/assets/home.svg"
-import  Challenge from "@/assets/Challenge.svg"
+import  Challenge from "@/assets/challenge.svg"
 
 
 
