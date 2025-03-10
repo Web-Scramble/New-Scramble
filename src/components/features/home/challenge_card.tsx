@@ -7,11 +7,10 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { 
   Plus, 
   MoreHorizontal, 
-  CalendarClock, 
-  Share2, 
+  CalendarDays, 
+  SendHorizontal, 
   Play, 
   FileText,
-  DollarSignIcon
 } from 'lucide-react';
 import { CommentModal } from './comment_modal';
 import { User } from '@/types/authentication';
@@ -19,6 +18,8 @@ import  Comments from "@/assets/comments.svg"
 import Leaderboard from "@/assets/leaderboard.svg"
 import AddParticipantsModal from './add_participant_modal';
 import  ShareChallengeModal  from './share_modal';
+import  Paid from "@/assets/paid.svg"
+
 
 type AvatarGroupProps ={
     users:Pick<User,"username"|"profile_picture">[];
@@ -221,7 +222,7 @@ const AvatarGroup = ({ users, count, onAddClick }:AvatarGroupProps) => {
             </div>
             <div>
               <p className="flex items-center text-sm text-left font-bold text-gray-500 mb-2">
-                <CalendarClock className="h-4 w-4 text-gray-500 mr-1" />
+                <CalendarDays className="h-4 w-4 text-gray-500 mr-1" />
                 End date</p>
               <div className="flex items-end mt-4">
                 <span className="text-sm text-gray-400">{endDate}</span>
@@ -235,8 +236,8 @@ const AvatarGroup = ({ users, count, onAddClick }:AvatarGroupProps) => {
             </div>
           </div>
           <div>
-            <p className="flex items- justify-end text-sm text-right font-bold text-gray-500 mb-2">
-                <DollarSignIcon className="h-4 w-4 text-gray-500" />
+            <p className="flex items-center justify-end text-sm text-right gap-1 font-bold text-gray-500 mb-2">
+                <Paid />
                 Reward</p>
             <div className="flex items-center">
               <span className="text-2xl font-bold text-blue-300">${reward}</span>
@@ -252,7 +253,6 @@ const AvatarGroup = ({ users, count, onAddClick }:AvatarGroupProps) => {
       <CardFooter className="px-4 py-3 flex justify-between">
         <div className="flex items-center gap-6">
           <Button variant="ghost" className="flex items-center gap-1 p-0 h-auto" onClick={()=>setIsOpen(true)}>
-            {/* <MessagesSquare className="h-5 w-5 text-gray-500" /> */}
             <Comments />
             <span className="text-gray-500">15</span>
           </Button>
@@ -261,7 +261,7 @@ const AvatarGroup = ({ users, count, onAddClick }:AvatarGroupProps) => {
             <span className="text-gray-500">56</span>
           </Button>
           <Button variant="ghost" className="flex items-center p-0 h-auto " onClick={() => setIsShareModalOpen(true)}>
-            <Share2 className="h-5 w-5 text-gray-500" />
+            <SendHorizontal className="h-5 w-5 text-gray-500" />
           </Button>
         </div>
         <Button className="bg-blue-500 hover:bg-blue-600 text-white px-6" onClick={onJoinClick}>

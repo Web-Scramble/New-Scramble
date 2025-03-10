@@ -21,12 +21,15 @@ import {
   signInWithPopup,
   GoogleAuthProvider,
   FacebookAuthProvider,
+  TwitterAuthProvider
 } from "firebase/auth";
 import { auth } from "@/services/firebase";
 import { useSocialAuth } from "@/hooks/auth/useSocialAuth";
 import { authStore } from "@/store/authstore";
 import { setItemToLocalStorage } from "@/utils/localStorage";
 import { TOKEN, USER_DATA } from "@/constants/keys";
+import { toast } from "sonner";
+
 
 type SignupFormValues = {
   phone: string;
@@ -35,7 +38,7 @@ type SignupFormValues = {
 export default function Signup() {
   const navigate = useNavigate();
   const [selectedDialCode, setSelectedDialCode] = useState("+1");
-  const { updateToken, updateUser } = authStore();
+  const { updateToken, updateUser,updateFirebaseToken } = authStore();
 
   const form = useForm<SignupFormValues>({
     resolver: yupResolver(signupSchema),
@@ -79,20 +82,23 @@ export default function Signup() {
           {
             onSuccess: (data) => {
               console.log(data);
+              if (data.socialToken) {
+                updateFirebaseToken(data.socialToken)
+                toast.success("Account created successfully");
+                navigate(`/add_phone`);
+                return;
+              }
               setItemToLocalStorage(USER_DATA, data.user);
               setItemToLocalStorage(TOKEN, data.token);
               updateToken(data.token);
+              toast.success(data.message);
               updateUser(data.user);
-              if (!data.user.phone) {
-                navigate(`/verify_otp/`);
-              }
               navigate(`/home`);
             },
           }
         )
       );
-
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       console.log(error);
     }
@@ -138,9 +144,40 @@ export default function Signup() {
 
   async function signInWithTwitter() {
     try {
-      console.log("twitter");
-    } catch (error) {
-      console.error("Twitter sign in error:", error);
+      const provider = new TwitterAuthProvider();
+      const result = await signInWithPopup(auth, provider);
+      const credential = TwitterAuthProvider.credentialFromResult(result);
+      if (!credential) {
+        console.error("Error in user Credential");
+        return;
+      }
+      const token = credential.accessToken;
+      const user = result.user;
+      console.log(user, token);
+      auth?.currentUser?.getIdToken(/* forceRefresh */ true).then((idToken) =>
+        socialAuth(
+          {
+            token: idToken,
+          },
+          {
+            onSuccess: (data) => {
+              console.log(data.user);
+              setItemToLocalStorage(USER_DATA, data.user);
+              setItemToLocalStorage(TOKEN, data.token);
+              updateToken(data.token);
+              updateUser(data.user);
+              if (!data.user.phone) {
+                navigate(`/add_phone`);
+                return;
+              }
+              navigate(`/home`);
+            },
+          }
+        )
+      );
+       // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      console.log(error);
     }
   }
 

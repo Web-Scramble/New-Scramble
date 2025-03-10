@@ -13,11 +13,17 @@
  export type SocialAuthPayload ={
     token: string;
 }
+
+ export type SocialAddPhonePayload ={
+    token: string;
+    phone:string;
+}
   
  export interface AuthResponse {
     token: string;
     user: User;
     message:string;
+    socialToken:string;	
   }
 
 export interface User {
