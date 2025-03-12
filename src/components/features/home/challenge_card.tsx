@@ -18,6 +18,7 @@ import  Comments from "@/assets/comments.svg"
 import Leaderboard from "@/assets/leaderboard.svg"
 import AddParticipantsModal from './add_participant_modal';
 import  ShareChallengeModal  from './share_modal';
+import { CommentType } from '@/types/challenge';
 import  Paid from "@/assets/paid.svg"
 
 
@@ -27,18 +28,19 @@ type AvatarGroupProps ={
     onAddClick:()=>void
 }
 export interface ChallengeCardProps {
-    user: Pick<User,"username"|"profile_picture">;
+    user?: Pick<User,"username"|"profile_picture">;
     date: string;
     title: string;
     status: string;
     description: string;
     tags: string[];
-    media: Media;
-    reviewers: {
+    media?: Media;
+    attachments: string[]
+    reviewers?: {
         users:Pick<User,"username"|"profile_picture">[];
         count:number;
     };
-    participants: {
+    participants?: {
         users:Pick<User,"username"|"profile_picture">[];
         count:number;
     };
@@ -51,6 +53,10 @@ export interface ChallengeCardProps {
     onLikeClick: () => void;
     onCommentClick: () => void;
     onShareClick: () => void;
+    comments: CommentType[];
+    challengeId: string;
+    onCommentPosted: () => void
+    
   }
   export interface MediaFile {
     name: string;
@@ -69,8 +75,8 @@ const AvatarGroup = ({ users, count, onAddClick }:AvatarGroupProps) => {
       <div className="flex -space-x-3">
         {users.slice(0, 2).map((user, index) => (
           <Avatar key={index} className="border-2 border-white w-8 h-8">
-            <AvatarImage src={user.profile_picture||"images"} alt={user.username} />
-            <AvatarFallback>{user.username[0]}</AvatarFallback>
+            {/* <AvatarImage src={user.profile_picture||"images"} alt={user.username} /> */}
+            {/* <AvatarFallback>{user.username[0]}</AvatarFallback> */}
           </Avatar>
         ))}
       </div>
@@ -97,12 +103,16 @@ const AvatarGroup = ({ users, count, onAddClick }:AvatarGroupProps) => {
   endDate, 
   timing, 
   reward,
+  attachments,
+  comments,
 //   onFollowClick,
 //   onMenuClick,
   onJoinClick,
 //   onLikeClick,
   onCommentClick,
-  // onShareClick
+  challengeId,
+  onCommentPosted,
+  // onShareClick,
 }:ChallengeCardProps) => {
     const [isOpen, setIsOpen] = useState(false);
     const [isParticipantModalOpen, setIsParticipantModalOpen] = useState(false);
@@ -116,13 +126,13 @@ const AvatarGroup = ({ users, count, onAddClick }:AvatarGroupProps) => {
         <div className="flex items-center">
           <div className="relative">
             <Avatar className="h-12 w-12 mr-3">
-              <AvatarImage src={user.profile_picture||"images"} alt={user.username} />
-              <AvatarFallback>{user.username[0]}</AvatarFallback>
+              {/* <AvatarImage src={user.profile_picture||"images"} alt={user.username} /> */}
+              {/* <AvatarFallback>{user.username[0]}</AvatarFallback> */}
             </Avatar>
             <div className="relative bottom-3 left-8 w-3 h-3 bg-blue-500 rounded-full border-2 border-white"></div>
           </div>
           <div>
-            <h3 className="font-semibold text-lg text-gray-800">{user.username}</h3>
+            {/* <h3 className="font-semibold text-lg text-gray-800">{user.username}</h3> */}
             <p className="text-sm text-gray-500 font-normal">{date}</p>
           </div>
         </div>
@@ -169,18 +179,18 @@ const AvatarGroup = ({ users, count, onAddClick }:AvatarGroupProps) => {
         {/* Media Section */}
         <div className="grid grid-cols-12 gap-3 mb-6">
           {/* Left media section - 2 items */}
-          <div className="col-span-3 flex flex-col gap-3">
+          {/* <div className="col-span-3 flex flex-col gap-3">
             <div className="h-40 bg-gray-100 rounded-lg overflow-hidden">
               <img src={media.images[0]} alt="Media content" className="w-full h-full object-cover" />
             </div>
             <div className="h-40 bg-gray-100 rounded-lg overflow-hidden">
               <img src={media.images[1]} alt="Media content" className="w-full h-full object-cover" />
             </div>
-          </div>
+          </div> */}
           
           {/* Center - Video */}
           <div className="col-span-6 relative rounded-lg overflow-hidden">
-            <img src={media.video.thumbnail} alt="Video thumbnail" className="w-full h-full object-cover" />
+            {/* <img src={media.video.thumbnail} alt="Video thumbnail" className="w-full h-full object-cover" /> */}
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="rounded-full bg-white/80 p-4 backdrop-blur-sm">
                 <Play className="h-6 w-6 text-purple-500 fill-purple-500" />
@@ -190,12 +200,12 @@ const AvatarGroup = ({ users, count, onAddClick }:AvatarGroupProps) => {
           
           {/* Right - PDF files */}
           <div className="col-span-3 flex flex-col gap-3">
-            {media.files.map((file, index) => (
+            {attachments.map((file, index) => (
               <div key={index} className="border-2 border-blue-300 rounded-lg p-4 flex flex-col items-center justify-center h-40">
                 <div className="bg-blue-100 p-2 rounded-lg mb-2">
                   <FileText className="h-6 w-6 text-blue-500" />
                 </div>
-                <p className="text-center text-sm text-gray-600">{file.name}</p>
+                <p className="text-center text-sm text-gray-600">{file}</p>
               </div>
             ))}
           </div>
@@ -206,19 +216,19 @@ const AvatarGroup = ({ users, count, onAddClick }:AvatarGroupProps) => {
           <div className="flex gap-6">
             <div>
               <p className="text-sm text-left font-bold text-gray-500 mb-2">Reviewers</p>
-              <AvatarGroup 
+              {/* <AvatarGroup 
                 users={reviewers.users} 
                 count={reviewers.count} 
                 onAddClick={() => setIsParticipantModalOpen(true)} 
-              />
+              /> */}
             </div>
             <div>
               <p className="text-sm text-left font-bold text-gray-500 mb-2">Participants</p>
-              <AvatarGroup 
+              {/* <AvatarGroup 
                 users={participants.users} 
                 count={participants.count} 
                 onAddClick={() => console.log('Add participant')} 
-              />
+              /> */}
             </div>
             <div>
               <p className="flex items-center text-sm text-left font-bold text-gray-500 mb-2">
@@ -269,7 +279,7 @@ const AvatarGroup = ({ users, count, onAddClick }:AvatarGroupProps) => {
         </Button>
       </CardFooter>
     </Card>
-    <CommentModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
+    <CommentModal isOpen={isOpen} onClose={() => setIsOpen(false)} comments={comments} challengeId={challengeId} onCommentPosted={onCommentPosted}/>
     <AddParticipantsModal isOpen={isParticipantModalOpen} onClose={() => setIsParticipantModalOpen(false)} />
     <ShareChallengeModal isOpen={isShareModalOpen} onClose={() => setIsShareModalOpen(false)} />
       

@@ -5,6 +5,9 @@ import {
   CardDescription,
 } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
+import { useEffect, useState } from 'react'
+import { Challenge } from '@/types/challenge'
+import { getAllChallenges } from '@/api/challenge'
 
 interface SmallChallengeCardProps {
   imageUrl?: string
@@ -50,24 +53,44 @@ export const SmallChallengeCard = ({
 
 
 export default function TrendingChallenges() {
-    const challenges = [
-      {
-        id: 1,
-        imageUrl: '/images/image.png',
-        title: 'Challenge Title',
-        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-        participants: 230,
-        timeLeft: '2 days left',
-      },
-      {
-        id: 2,
-        imageUrl: '/images/image.png',
-        title: 'Another Challenge',
-        description: 'Suspendisse efficitur, lorem sed luctus gravida...',
-        participants: 120,
-        timeLeft: '5 days left',
-      },
-    ]
+
+  const [challenges, setChallenges] = useState<Challenge[]>([])
+    // const challenges = [
+    //   {
+    //     id: 1,
+    //     imageUrl: '/images/image.png',
+    //     title: 'Challenge Title',
+    //     description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+    //     participants: 230,
+    //     timeLeft: '2 days left',
+    //   },
+    //   {
+    //     id: 2,
+    //     imageUrl: '/images/image.png',
+    //     title: 'Another Challenge',
+    //     description: 'Suspendisse efficitur, lorem sed luctus gravida...',
+    //     participants: 120,
+    //     timeLeft: '5 days left',
+    //   },
+    // ]
+
+
+    useEffect(() => {
+      
+     const fetchChallenges = async() => {
+
+      try{
+        const response = await getAllChallenges()
+        setChallenges(response)
+      } catch(err: any){
+        console.log(err)
+      }
+
+     
+     }
+
+     fetchChallenges
+    }, []);
   
     return (
         <section className="w-full max-w-md border rounded-lg bg-white">
@@ -86,7 +109,7 @@ export default function TrendingChallenges() {
         {challenges.map((ch) => (
           <SmallChallengeCard
             key={ch.id}
-            imageUrl={ch.imageUrl}
+          //  imageUrl={ch.imageUrl}
             title={ch.title}
             description={ch.description}
             onClick={() => console.log('View challenge', ch.id)}
