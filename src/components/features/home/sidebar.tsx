@@ -47,8 +47,9 @@ const navItems: NavItem[] = [
     label: "Challenges",
     icon: Challenge,
     subItems: [
-      { label: "New Challenges", to: "/challenges/new" },
+      { label: "My Challenges", to: "/mychallenges" },
       { label: "All Challenges", to: "/challenges/all" },
+      { label: "Revisions", to: "/challenges/all" },
     ],
   },
   {
@@ -81,7 +82,7 @@ const navItems: NavItem[] = [
     icon: Settings,
     to: "/settings",
   },
-]
+];
 
 export default function Sidebar() {
   const [openChallenges, setOpenChallenges] = useState(false)

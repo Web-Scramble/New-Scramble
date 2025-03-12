@@ -7,6 +7,8 @@ import { TOKEN, USER_DATA } from "@/constants/keys";
 import { getItemFromLocalStorage } from "@/utils/localStorage";
 import { useEffect } from "react";
 import { authStore } from "./store/authstore";
+import DashboardLayout from "./pages/dashboard/layout";
+import MyChallenges from "./pages/dashboard/challenges/mychallenges";
 
 function App() {
   const { token, reloading, setReloading, updateToken, updateUser } =
@@ -53,20 +55,24 @@ function App() {
   return (
     <>
       <Routes>
-        <Route path="/" element={<LandingPage />} />
+        {/*<Route path="/" element={<LandingPage />} />*/}
         <Route path="/verify_otp/:phone" element={<VerifyOtp />} />
         <Route path="/create_account/:phone" element={<CreateAccount />} />
         <Route path="/signup" element={<Signup />} />
-        {/* <Route path="/home" element={<Dashboard />} /> */}
+
         <Route path="/add_phone" element={<AddPhone />} />
         <Route
-          path="/home"
+          path="/"
           element={
-            <RequireAuth redirectTo={"/"}>
-              <Dashboard />
-            </RequireAuth>
+            <DashboardLayout />
+            /*<RequireAuth redirectTo={"/home"}>
+              
+            </RequireAuth>*/
           }
-        />
+        >
+          <Route path="home" element={<Dashboard />} />
+          <Route path="mychallenges" element={<MyChallenges />} />
+        </Route>
       </Routes>
       <Toaster richColors position="top-right" />
     </>

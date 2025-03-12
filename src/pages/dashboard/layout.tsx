@@ -11,8 +11,9 @@ import { messaging } from "@/services/firebase";
 import { onMessage } from "firebase/messaging";
 import { requestForToken } from "@/services/request_fcm_token";
 import { registerDevice } from "@/api/user";
+import { Outlet } from "react-router";
 
-export default function Dashboard() {
+export default function DashboardLayout() {
   const [token, setToken] = useState("");
   useEffect(() => {
     const getToken = async () => {
@@ -50,28 +51,16 @@ export default function Dashboard() {
     };
   }, []);
 
-  console.log("WORKING:!!!");
-
   return (
-    <main className="flex h-full gap-4 w-full bg-[#F9F9FA]">
-      <section className="flex gap-4">
-        <section className="w-full">
-          <ChallengeHeader />
-          <ChallengeCard
-            {...mockChallengeData}
-            onFollowClick={() => console.log("Follow")}
-            onMenuClick={() => console.log("Menu")}
-            onJoinClick={() => console.log("Join")}
-            onLikeClick={() => console.log("Like")}
-            onCommentClick={() => console.log("Comment")}
-            onShareClick={() => console.log("Share")}
-          />
-        </section>
-        <section className="flex flex-col max-w-2/5 gap-4">
-          <ProfileCard />
-          <SuggestedUsers />
-          <TrendingChallenges />
-        </section>
+    <main className="flex h-full gap-4 w-full bg">
+      <Sidebar />
+      <section className="flex flex-col gap-2 ml-68 w-full">
+        <SearchHeader />
+        <div className="pl-0 p-6">
+          <div className=" bg-[#F9F9FA] rounded-[12px] flex flex-col gap-4 p-6">
+            <Outlet />
+          </div>
+        </div>
       </section>
     </main>
   );
