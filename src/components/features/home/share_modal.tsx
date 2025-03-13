@@ -3,7 +3,7 @@ import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { SendHorizontal} from "lucide-react";
 import { UserCard } from "./user";
-import  Copy from "@/assets/Copy.svg"
+import  Copy from "@/assets/copy.svg"
 
 
 interface ShareChallengeModalProps {

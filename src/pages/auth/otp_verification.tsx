@@ -20,6 +20,7 @@ import { useSendOtp } from "@/hooks/auth/useSendOtp";
 import { toast } from "sonner";
 import { ArrowRight, Check } from "lucide-react";
 import { authStore } from "@/store/authstore";
+import { useOtpAuth } from "@/hooks/auth/useOtpAuth";
 import { setItemToLocalStorage } from "@/utils/localStorage";
 import { TOKEN, USER_DATA } from "@/constants/keys";
 
@@ -38,8 +39,10 @@ export default function VerifyOtp() {
     defaultValues: { otp: "" },
   });
 
-  const { mutate: validateOtpMutation, isPending: validating } =
-    useValidateOtp();
+  // const { mutate: validateOtpMutation, isPending: validating } =
+  //   useValidateOtp();
+  const { mutate: otpAuthmutation, isPending: authenticating } =
+    useOtpAuth();
   const { mutate: resendOtp, isPending: resending } = useSendOtp();
 
   const [timeLeft, setTimeLeft] = useState(60);
@@ -61,27 +64,66 @@ export default function VerifyOtp() {
       .padStart(2, "0")}`;
   };
 
+  // const onSubmit = (values: OtpFormValues) => {
+  //   if (!phone) {
+  //     toast.error("Phone number is missing");
+  //     return;
+  //   }
+  //   const payload = { phone, otp: values.otp };
+  //   validateOtpMutation(payload, {
+  //     onSuccess: (data) => {
+  //       console.log(data);
+  //       if (data.message === "Complete registration required") {
+  //         setSuccess(true);
+  //       }
+  //       if (data.message === "Login successful") {
+  //         setItemToLocalStorage(USER_DATA, data.user);
+  //         setItemToLocalStorage(TOKEN, data.token);
+  //         updateToken(data.token);
+  //         updateUser(data.user);
+  //         navigate("/home");
+  //       }
+  //     },
+  //   });
+  // };
   const onSubmit = (values: OtpFormValues) => {
-    if (!phone) {
-      toast.error("Phone number is missing");
+    if (!window.confirmationResult) {
+      toast.error("OTP confirmation result is not available. Please request a new OTP.");
       return;
     }
-    const payload = { phone, otp: values.otp };
-    validateOtpMutation(payload, {
-      onSuccess: (data) => {
-        console.log(data);
-        if (data.message === "Complete registration required") {
-          setSuccess(true);
+     // Verify the OTP code with Firebase
+  window.confirmationResult.confirm(values.otp).then((result) => {
+    // OTP verified successfully; the user is now signed in.
+    const user = result.user;
+    // console.log(result.user.idToken,"user")
+    console.log(result.user,"token")
+    // console.log("OTP verified successfully!", user);
+    otpAuthmutation(
+      {idToken:result._tokenResponse.idToken},{
+        onSuccess:(data)=>{
+          console.log(data);
+                if (data.message === "Complete registration required") {
+                  setSuccess(true);
+                }
+                if (data.message === "Login successful") {
+                  setItemToLocalStorage(USER_DATA, data.user);
+                  setItemToLocalStorage(TOKEN, data.token);
+                  updateToken(data.token);
+                  updateUser(data.user);
+                  navigate("/home");
+                }
         }
-        if (data.message === "Login successful") {
-          setItemToLocalStorage(USER_DATA, data.user);
-          setItemToLocalStorage(TOKEN, data.token);
-          updateToken(data.token);
-          updateUser(data.user);
-          navigate("/home");
-        }
-      },
-    });
+      }
+    )
+    // updateUser(user);
+    // navigate("/home");
+    // toast.success("OTP verified successfully!");
+  })
+  .catch((error) => {
+    // OTP verification failed; the code might be invalid or expired.
+    console.error("Error verifying OTP:", error);
+    toast.error("Invalid or expired OTP. Please try again.");
+  });
   };
 
   const handleResend = () => {
@@ -167,9 +209,9 @@ export default function VerifyOtp() {
                   <Button
                     type="submit"
                     className="w-full bg-primary"
-                    disabled={validating}
+                    disabled={authenticating}
                   >
-                    {validating ? "Verifying..." : "Verify →"}
+                    {authenticating ? "Verifying..." : "Verify →"}
                   </Button>
 
                   {timeLeft > 0 ? (

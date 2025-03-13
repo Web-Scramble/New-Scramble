@@ -13,6 +13,9 @@
  export type SocialAuthPayload ={
     token: string;
 }
+ export type OtpAuthPayload ={
+    idToken: string;
+}
 
  export type SocialAddPhonePayload ={
     token: string;
