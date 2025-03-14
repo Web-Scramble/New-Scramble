@@ -58,13 +58,11 @@ function App() {
         <Route path="/verify_otp/:phone" element={<VerifyOtp />} />
         <Route path="/create_account/:phone" element={<CreateAccount />} />
         <Route path="/signup" element={<Signup />} />
-        {/* <Route path="/home" element={<Dashboard />} /> */}
         <Route path="/add_phone" element={<AddPhone />} />
-        {/* <Route path="/wallet" element={<AddPhone />} /> */}
         <Route
           path="/home"
           element={
-            <RequireAuth redirectTo={"/"}>
+            <RequireAuth redirectTo={"/signup"}>
               <Dashboard />
             </RequireAuth>
           }
@@ -72,7 +70,7 @@ function App() {
         <Route
           path="/wallet"
           element={
-            <RequireAuth redirectTo={"/"}>
+            <RequireAuth redirectTo={"/signup"}>
               <WalletDashboard />
             </RequireAuth>
           }

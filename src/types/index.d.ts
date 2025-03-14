@@ -1,8 +1,9 @@
+import { ConfirmationResult, RecaptchaVerifier } from "firebase/auth";
 export {};
 
 declare global {
   interface Window {
     recaptchaVerifier?: RecaptchaVerifier;
-    confirmationResult?: unknown;
+    confirmationResult?: ConfirmationResult;
   }
 }

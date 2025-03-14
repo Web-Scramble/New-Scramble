@@ -24,7 +24,7 @@ import {
   TwitterAuthProvider,
   signInWithPhoneNumber,
   RecaptchaVerifier,
-  getAuth
+  // getAuth
 } from "firebase/auth";
 import { auth } from "@/services/firebase";
 import { useSocialAuth } from "@/hooks/auth/useSocialAuth";
@@ -54,26 +54,12 @@ export default function Signup() {
   const { mutate: socialAuth } = useSocialAuth();
 
   // Initialize Firebase reCAPTCHA verifier with invisible size.
-  const newAuth = getAuth()
-  newAuth.useDeviceLanguage()
+  // const auth = getAuth()
+  auth.useDeviceLanguage()
   useEffect(() => {
-
-  }, []);
-
-  async function onSubmit(values: SignupFormValues) {
-    const formattedPhone = `${selectedDialCode}${values.phone}`;
-    // comment out twilio phone auth.
-    // sendOtp(
-    //   { phone: formattedPhone },
-    //   {
-    //     onSuccess: () => {
-    //       navigate(`/verify_otp/${formattedPhone}`);
-    //     },
-    //   }
-    // );
     if (!window.recaptchaVerifier) {
       window.recaptchaVerifier = new RecaptchaVerifier(
-        newAuth,
+        auth,
         "recaptcha-container",
         {
           size: "invisible",
@@ -87,22 +73,34 @@ export default function Signup() {
         },
       );
     }
+  }, []);
+
+  async function onSubmit(values: SignupFormValues) {
+    const formattedPhone = `${selectedDialCode}${values.phone}`;
+    // comment out twilio phone auth.
+    // sendOtp(
+    //   { phone: formattedPhone },
+    //   {
+    //     onSuccess: () => {
+    //       navigate(`/verify_otp/${formattedPhone}`);
+    //     },
+    //   }
+    // );
+
     setLoading(true)
     const appVerifier = window.recaptchaVerifier;
-    signInWithPhoneNumber(newAuth, formattedPhone, appVerifier)
+    signInWithPhoneNumber(auth, formattedPhone, appVerifier)
       .then((confirmationResult) => {
-        // SMS sent. Prompt user to type the code from the message, then sign the
-        // user in with confirmationResult.confirm(code).
+      toast.success("OTP send, please check your device");
+
         window.confirmationResult = confirmationResult;
-        console.log(confirmationResult)
-        // ...
+        // console.log(confirmationResult)
         navigate(`/verify_otp/${formattedPhone}`);
         setLoading(false)
       })
       .catch((error) => {
-        // Error; SMS not sent
-        // ...
         console.log(error,"not sent")
+      toast.error("OTP not send");
         setLoading(false)
       });
   }

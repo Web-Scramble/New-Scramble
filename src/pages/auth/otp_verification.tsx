@@ -15,7 +15,7 @@ import Header from "@/components/features/auth/header";
 import { otpSchema } from "@/schema/auth_schemas";
 import Sidebar from "@/components/features/auth/auth-sidebar";
 import { useEffect, useState } from "react";
-import { useValidateOtp } from "@/hooks/auth/useValidateOtp";
+// import { useValidateOtp } from "@/hooks/auth/useValidateOtp";
 import { useSendOtp } from "@/hooks/auth/useSendOtp";
 import { toast } from "sonner";
 import { ArrowRight, Check } from "lucide-react";
@@ -32,7 +32,8 @@ export default function VerifyOtp() {
   const navigate = useNavigate();
   const { phone } = useParams();
   const [success, setSuccess] = useState(false);
-  const { updateToken, updateUser } = authStore();
+  const { updateToken, updateUser ,updateFirebaseToken} = authStore();
+  // const [Loading, setLoading] = useState(second)
 
   const form = useForm<OtpFormValues>({
     resolver: yupResolver(otpSchema),
@@ -91,21 +92,17 @@ export default function VerifyOtp() {
       toast.error("OTP confirmation result is not available. Please request a new OTP.");
       return;
     }
-     // Verify the OTP code with Firebase
   window.confirmationResult.confirm(values.otp).then((result) => {
-    // OTP verified successfully; the user is now signed in.
-    const user = result.user;
-    // console.log(result.user.idToken,"user")
-    console.log(result.user,"token")
-    // console.log("OTP verified successfully!", user);
     otpAuthmutation(
+      //@ts-expect-error firebase types donot include this property
       {idToken:result._tokenResponse.idToken},{
         onSuccess:(data)=>{
           console.log(data);
                 if (data.message === "Complete registration required") {
                   setSuccess(true);
+                  updateFirebaseToken(data?.registrationData.firebaseUID)
                 }
-                if (data.message === "Login successful") {
+                if (data.message === "Authenticated successfully") {
                   setItemToLocalStorage(USER_DATA, data.user);
                   setItemToLocalStorage(TOKEN, data.token);
                   updateToken(data.token);
@@ -120,7 +117,6 @@ export default function VerifyOtp() {
     // toast.success("OTP verified successfully!");
   })
   .catch((error) => {
-    // OTP verification failed; the code might be invalid or expired.
     console.error("Error verifying OTP:", error);
     toast.error("Invalid or expired OTP. Please try again.");
   });
@@ -146,7 +142,7 @@ export default function VerifyOtp() {
     <div className="flex flex-col md:flex-row h-full lg:h-screen bg-primary-background p-4 rounded-xl gap-4">
       <Sidebar />
       {success ? (
-        <div className="flex w-full flex-col items-center justify-center md:p-8 bg-white rounded-xl">
+        <div className="flex w-full flex-col items-center justify-center p-2 md:p-8 bg-white rounded-xl">
           <Card className="w-full max-w-sm border-none shadow-none text-center">
             <CardContent className="flex flex-col items-center space-y-6">
               <div className="p-3 bg-[#12B76A] text-white rounded-sm">

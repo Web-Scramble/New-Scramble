@@ -9,6 +9,8 @@
     phone: string;
     username:string;
     email:string;
+    idToken?:string;
+    
 }
  export type SocialAuthPayload ={
     token: string;
@@ -26,7 +28,8 @@
     token: string;
     user: User;
     message:string;
-    socialToken:string;	
+    socialToken:string;
+    registrationData:Record<string,string>	
   }
 
 export interface User {
