@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { SearchBar } from "./search"
 import { authStore } from "@/store/authstore";
+import { useLocation } from "react-router";
 
 
 type SearchheaderProps ={
@@ -11,15 +12,19 @@ type SearchheaderProps ={
 
 export default function SearchHeader({page}:SearchheaderProps) {
     const {user} = authStore()
+    const {pathname} = useLocation()
+
+
   
   return (
     <header className="flex w-full items-center justify-between border-b border-gray-200 p-4 ">
       <div className="flex flex-col">
         <h2 className="text-2xl font-semibold text-black font-grotesk">
-          Welcome, Nde
+
+          Welcome, {user.username}
         </h2>
         <nav className="mt-1 text-sm text-gray-400 text-left">
-          Pages → <span className="text-blue-400">{page}</span>
+          Pages → <span className="text-blue-400">{pathname.split("/")[1]}</span>
         </nav>
       </div>
 

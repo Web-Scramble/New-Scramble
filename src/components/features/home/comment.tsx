@@ -10,18 +10,20 @@ export interface CommentProps {
   }
 export const Comment = ({ user, content, time, replyCount, isCurrentUser = false }:CommentProps) => {
   return (
-    <div className="py-3 w-full">
-      <div className="flex gap-3 mb-1 w-full">
+
+    <div className="py-3">
+      <div className="flex gap-3 mb-1">
         <Avatar className="h-10 w-10">
           <AvatarImage src={"/images/Avatar3.png"} alt={user.username} />
           <AvatarFallback>{user.username[0] }</AvatarFallback>
         </Avatar>
         <div className="flex-1">
-          <div className={`p-3 rounded-lg flex flex-col items-start ${isCurrentUser ? 'bg-blue-50 ml-auto' : 'bg-gray-50'}`}>
+
+          <div className={`p-3 rounded-lg ${isCurrentUser ? 'bg-blue-50 ml-auto' : 'bg-gray-50'}`}>
             <h4 className="font-medium text-gray-700 mb-1">
               {isCurrentUser ? 'You' : user.username}
             </h4>
-            <p className="text-gray-600 text-sm ">
+            <p className="text-gray-600 text-sm">
               {content}
             </p>
           </div>

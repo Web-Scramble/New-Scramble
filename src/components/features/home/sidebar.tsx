@@ -50,6 +50,7 @@ const navItems: NavItem[] = [
       { label: "My Challenges", to: "/mychallenges" },
       { label: "New Challenges", to: "/challenges/new" },
       { label: "Edit Scheduled", to: "/challenges/schedule/edit" },
+
       { label: "All Challenges", to: "/challenges/all" },
     ],
   },

@@ -30,9 +30,9 @@ type AccountFormValues = {
 export default function CreateAccount() {
   const navigate = useNavigate();
   const { phone } = useParams();
-  const { updateToken, updateUser } = authStore();
+  const { updateToken, updateUser,firebase_token } = authStore();
   const [success, setSuccess] = useState(false);
-
+  // console.log(firebase_token)
   const form = useForm<AccountFormValues>({
     resolver: yupResolver(accountSchema),
     defaultValues: { email: "", fullName: "" },
@@ -46,6 +46,7 @@ export default function CreateAccount() {
       phone,
       email: values.email,
       username: values.fullName,
+      firebaseUID:firebase_token
     };
 
     createUserMutation(payload, {
@@ -77,7 +78,7 @@ export default function CreateAccount() {
 
             <CardFooter className="flex flex-col space-y-4 items-center">
               <Button
-                onClick={() => navigate("/dashboard")}
+                onClick={() => navigate("/home")}
                 className="w-full bg-primary"
               >
                 Continue <ArrowRight className="ml-2 h-4 w-4" />

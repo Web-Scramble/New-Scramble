@@ -110,7 +110,8 @@ const AvatarGroup = ({ users, count, onAddClick }:AvatarGroupProps) => {
 
     return (
         <>
-    <Card className=" w-[60%] shadow-none rounded-lg overflow-hidden border-none">
+
+    <Card className="w-full max-w-4xl shadow-none rounded-lg overflow-hidden border-none">
       {/* Card Header */}
       <CardHeader className="flex flex-row items-center justify-between p-4 pb-2">
         <div className="flex items-center">

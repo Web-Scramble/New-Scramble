@@ -6,6 +6,8 @@ import {
   SocialAuthPayload,
   SocialAddPhonePayload,
   AuthResponse
+
+  OtpAuthPayload
  } from "@/types/authentication";
 
 const baseURL = import.meta.env.VITE_API_URL
@@ -40,5 +42,11 @@ const api = axios.create({
   };
   export const AddPhone = async (values: SocialAddPhonePayload):Promise<AuthResponse> => {
     const response = await api.post("auth/social/registerSocialPhone", values);
+    return response.data;
+
+  };
+  export const OtpAuth = async (values: OtpAuthPayload):Promise<AuthResponse> => {
+    console.log(values)
+    const response = await api.post("auth/getUserFromToken", values);
     return response.data;
   };

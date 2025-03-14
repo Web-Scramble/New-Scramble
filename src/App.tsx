@@ -2,6 +2,7 @@ import "./App.css";
 import { Routes, Route, Navigate, useLocation } from "react-router";
 import { Signup, VerifyOtp, CreateAccount, LandingPage,AddPhone } from "@/pages/auth";
 import Dashboard from "@/pages/home";
+import WalletDashboard from "./pages/wallet";
 import { Toaster } from "sonner";
 import { TOKEN, USER_DATA } from "@/constants/keys";
 import { getItemFromLocalStorage } from "@/utils/localStorage";
@@ -62,11 +63,12 @@ function App() {
         <Route path="/create_account/:phone" element={<CreateAccount />} />
         <Route path="/signup" element={<Signup />} />
         {/* <Route path="/home" element={<Dashboard />} /> */}
+
         <Route path="/add_phone" element={<AddPhone />} />
         <Route
           path="/home"
           element={
-            <RequireAuth redirectTo={"/"}>
+            <RequireAuth redirectTo={"/signup"}>
               <Dashboard />
             </RequireAuth>
           }
@@ -75,6 +77,15 @@ function App() {
         <Route path="/challenges/new" element={<NewChallenges />} />
         <Route path="/challenges/schedule/edit" element={<EditScheduledChallenge />} />
         <Route path="/challenges/all" element={<AllChallenges />} />
+
+        <Route
+          path="/wallet"
+          element={
+            <RequireAuth redirectTo={"/signup"}>
+              <WalletDashboard />
+            </RequireAuth>
+          }
+        />
       </Routes>
       <Toaster richColors position="top-right" />
     </>
