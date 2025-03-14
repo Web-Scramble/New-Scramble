@@ -1,7 +1,6 @@
 import { useNavigate, useParams } from "react-router";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -15,7 +14,7 @@ import {
 } from "@/components/ui/form";
 import Header from "@/components/features/auth/header";
 import { accountSchema } from "@/schema/auth_schemas";
-import Sidebar from "@/components/features/auth/sidebar";
+import Sidebar from "@/components/features/auth/auth-sidebar";
 import { useCreateUser } from "@/hooks/auth/useCreateUser";
 import { useState } from "react";
 import { Check, ArrowRight } from "lucide-react";
@@ -61,10 +60,10 @@ export default function CreateAccount() {
   };
 
   return (
-    <div className="flex h-screen bg-primary-background p-4 rounded-xl gap-4 ">
+    <div className="flex flex-col md:flex-row h-full lg:h-screen bg-primary-background p-4 rounded-xl gap-4">
       <Sidebar />
       {success ? (
-        <div className="flex w-full flex-col items-center justify-center p-8 bg-white rounded-xl">
+        <div className="flex w-full flex-col items-center justify-center md:p-8 bg-white rounded-xl">
           <Card className="w-full max-w-sm border-none shadow-none text-center">
             <CardContent className="flex flex-col items-center space-y-6">
               <div className="p-3 bg-[#12B76A] text-white rounded-sm">
@@ -87,13 +86,12 @@ export default function CreateAccount() {
           </Card>
         </div>
       ) : (
-        <div className="flex w-full flex-col items-center justify-center p-8 bg-white rounded-xl">
+        <div className="flex w-full flex-col items-center justify-center md:p-8 bg-white rounded-xl">
           <Card className="w-full max-w-sm border-none shadow-none">
             <Header
               bodyLabel="Choose a unique username for your account. You can always change it later."
               headerLabel="Create your username"
             />
-
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)}>
                 <CardContent className="flex flex-col space-y-6">
@@ -104,7 +102,11 @@ export default function CreateAccount() {
                       <FormItem>
                         <FormLabel className="text-left">Enter Email</FormLabel>
                         <FormControl>
-                          <Input placeholder="Enter your Email" {...field} />
+                          <Input
+                            placeholder="Enter your Email"
+                            {...field}
+                            className="text-sm md:text-base"
+                          />
                         </FormControl>
                         <FormMessage className="text-xs" />
                       </FormItem>
@@ -123,6 +125,7 @@ export default function CreateAccount() {
                               type="text"
                               placeholder="Enter your full name"
                               {...field}
+                              className="text-sm md:text-base"
                             />
                           </FormControl>
                         </div>

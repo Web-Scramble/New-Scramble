@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
@@ -13,8 +13,7 @@ import {
 import { InputOTP, InputOTPSlot } from "@/components/ui/input-otp";
 import Header from "@/components/features/auth/header";
 import { otpSchema } from "@/schema/auth_schemas";
-import Sidebar from "@/components/features/auth/sidebar";
-import { useParams } from "react-router";
+import Sidebar from "@/components/features/auth/auth-sidebar";
 import { useEffect, useState } from "react";
 import { useValidateOtp } from "@/hooks/auth/useValidateOtp";
 import { useSendOtp } from "@/hooks/auth/useSendOtp";
@@ -43,7 +42,7 @@ export default function VerifyOtp() {
     useValidateOtp();
   const { mutate: resendOtp, isPending: resending } = useSendOtp();
 
-  const [timeLeft, setTimeLeft] = useState(300);
+  const [timeLeft, setTimeLeft] = useState(60);
 
   useEffect(() => {
     if (timeLeft > 0) {
@@ -95,17 +94,17 @@ export default function VerifyOtp() {
       {
         onSuccess: () => {
           toast.success("OTP resent successfully");
-          setTimeLeft(300);
+          setTimeLeft(60);
         },
       }
     );
   };
 
   return (
-    <div className="flex h-screen bg-primary-background p-4 rounded-xl gap-4">
+    <div className="flex flex-col md:flex-row h-full lg:h-screen bg-primary-background p-4 rounded-xl gap-4">
       <Sidebar />
       {success ? (
-        <div className="flex w-full flex-col items-center justify-center p-8 bg-white rounded-xl">
+        <div className="flex w-full flex-col items-center justify-center md:p-8 bg-white rounded-xl">
           <Card className="w-full max-w-sm border-none shadow-none text-center">
             <CardContent className="flex flex-col items-center space-y-6">
               <div className="p-3 bg-[#12B76A] text-white rounded-sm">
@@ -128,7 +127,7 @@ export default function VerifyOtp() {
           </Card>
         </div>
       ) : (
-        <div className="flex w-full flex-col items-center justify-center p-8 bg-white rounded-xl">
+        <div className="flex w-full flex-col items-center justify-center md:p-8 bg-white rounded-xl">
           <Card className="w-full max-w-sm border-none shadow-none">
             <Header
               bodyLabel="We sent a verification code to your email/phone number. Enter the code below to continue."
@@ -153,7 +152,7 @@ export default function VerifyOtp() {
                               <InputOTPSlot
                                 key={index}
                                 index={index}
-                                className="rounded-sm h-12 w-12"
+                                className="rounded-sm h-8 md:h-12 w-8 md:w-12"
                               />
                             ))}
                           </InputOTP>

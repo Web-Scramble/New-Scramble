@@ -7,6 +7,10 @@ import { TOKEN, USER_DATA } from "@/constants/keys";
 import { getItemFromLocalStorage } from "@/utils/localStorage";
 import { useEffect } from "react";
 import { authStore } from "./store/authstore";
+import MyChallenges from "./pages/dashboard/challenges/myChallenges";
+import NewChallenges from "./pages/dashboard/challenges/newChallenge";
+import EditScheduledChallenge from "./pages/dashboard/challenges/editScheduledChallenge";
+import AllChallenges from "./pages/dashboard/challenges/challenges";
 
 function App() {
   const { token, reloading, setReloading, updateToken, updateUser } =
@@ -57,7 +61,7 @@ function App() {
         <Route path="/verify_otp/:phone" element={<VerifyOtp />} />
         <Route path="/create_account/:phone" element={<CreateAccount />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/home" element={<Dashboard />} />
+        {/* <Route path="/home" element={<Dashboard />} /> */}
         <Route path="/add_phone" element={<AddPhone />} />
         <Route
           path="/home"
@@ -67,6 +71,10 @@ function App() {
             </RequireAuth>
           }
         />
+        <Route path="/mychallenges" element={<MyChallenges />} />
+        <Route path="/challenges/new" element={<NewChallenges />} />
+        <Route path="/challenges/schedule/edit" element={<EditScheduledChallenge />} />
+        <Route path="/challenges/all" element={<AllChallenges />} />
       </Routes>
       <Toaster richColors position="top-right" />
     </>

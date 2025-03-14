@@ -53,9 +53,7 @@ function InputOTPSlot({
         className
       )}
       {...props}
-      // style={{
-      //   outlineColor:char?"#73A4FC":"#A9A9A9",
-      // }}
+      
     >
       {char}
       {hasFakeCaret && (

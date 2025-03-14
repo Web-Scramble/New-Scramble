@@ -1,2 +1,3 @@
 export const USER_DATA = "USER_DATA"
 export const TOKEN = "TOKEN"
+export const NOTIFICATION_PERMISSION = "NOTIFICATION_PERMISSION"
