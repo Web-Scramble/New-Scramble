@@ -14,14 +14,17 @@ import {
 import Header from "@/components/features/auth/header";
 import { signupSchema } from "@/schema/auth_schemas";
 import Sidebar from "@/components/features/auth/auth-sidebar";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { CountrySelect } from "@/components/features/auth/country_select";
-import { useSendOtp } from "@/hooks/auth/useSendOtp";
+// import { useSendOtp } from "@/hooks/auth/useSendOtp";
 import {
   signInWithPopup,
   GoogleAuthProvider,
   FacebookAuthProvider,
-  TwitterAuthProvider
+  TwitterAuthProvider,
+  signInWithPhoneNumber,
+  RecaptchaVerifier,
+  // getAuth
 } from "firebase/auth";
 import { auth } from "@/services/firebase";
 import { useSocialAuth } from "@/hooks/auth/useSocialAuth";
@@ -30,7 +33,6 @@ import { setItemToLocalStorage } from "@/utils/localStorage";
 import { TOKEN, USER_DATA } from "@/constants/keys";
 import { toast } from "sonner";
 
-
 type SignupFormValues = {
   phone: string;
 };
@@ -38,7 +40,8 @@ type SignupFormValues = {
 export default function Signup() {
   const navigate = useNavigate();
   const [selectedDialCode, setSelectedDialCode] = useState("+1");
-  const { updateToken, updateUser,updateFirebaseToken } = authStore();
+  const [loading, setLoading] = useState(false)
+  const { updateToken, updateUser, updateFirebaseToken } = authStore();
 
   const form = useForm<SignupFormValues>({
     resolver: yupResolver(signupSchema),
@@ -47,19 +50,59 @@ export default function Signup() {
     },
   });
 
-  const { mutate: sendOtp, isPending } = useSendOtp();
+  // const { mutate: sendOtp, isPending } = useSendOtp();
   const { mutate: socialAuth } = useSocialAuth();
+
+  // Initialize Firebase reCAPTCHA verifier with invisible size.
+  // const auth = getAuth()
+  auth.useDeviceLanguage()
+  useEffect(() => {
+    if (!window.recaptchaVerifier) {
+      window.recaptchaVerifier = new RecaptchaVerifier(
+        auth,
+        "recaptcha-container",
+        {
+          size: "invisible",
+          callback: (response:string) => {
+            // reCAPTCHA solved - allow signInWithPhoneNumber.
+            console.log("reCAPTCHA solved", response);
+          },
+          "expired-callback": () => {
+            console.log("reCAPTCHA expired, resetting...");
+          },
+        },
+      );
+    }
+  }, []);
 
   async function onSubmit(values: SignupFormValues) {
     const formattedPhone = `${selectedDialCode}${values.phone}`;
-    sendOtp(
-      { phone: formattedPhone },
-      {
-        onSuccess: () => {
-          navigate(`/verify_otp/${formattedPhone}`);
-        },
-      }
-    );
+    // comment out twilio phone auth.
+    // sendOtp(
+    //   { phone: formattedPhone },
+    //   {
+    //     onSuccess: () => {
+    //       navigate(`/verify_otp/${formattedPhone}`);
+    //     },
+    //   }
+    // );
+
+    setLoading(true)
+    const appVerifier = window.recaptchaVerifier;
+    signInWithPhoneNumber(auth, formattedPhone, appVerifier)
+      .then((confirmationResult) => {
+      toast.success("OTP send, please check your device");
+
+        window.confirmationResult = confirmationResult;
+        // console.log(confirmationResult)
+        navigate(`/verify_otp/${formattedPhone}`);
+        setLoading(false)
+      })
+      .catch((error) => {
+        console.log(error,"not sent")
+      toast.error("OTP not send");
+        setLoading(false)
+      });
   }
 
   const SignupWithGoogle = async () => {
@@ -74,31 +117,33 @@ export default function Signup() {
       const token = credential.accessToken;
       const user = result.user;
       console.log(user, token);
-      auth?.currentUser?.getIdToken(/* forceRefresh */ true).then((idToken) =>
-        socialAuth(
-          {
-            token: idToken,
-          },
-          {
-            onSuccess: (data) => {
-              console.log(data);
-              if (data.socialToken) {
-                updateFirebaseToken(data.socialToken)
-                toast.success("Account created successfully");
-                navigate(`/add_phone`);
-                return;
-              }
-              setItemToLocalStorage(USER_DATA, data.user);
-              setItemToLocalStorage(TOKEN, data.token);
-              updateToken(data.token);
-              toast.success(data.message);
-              updateUser(data.user);
-              navigate(`/home`);
+      auth?.currentUser
+        ?.getIdToken(/* forceRefresh */ true)
+        .then((idToken) =>
+          socialAuth(
+            {
+              token: idToken,
             },
-          }
-        )
-      );
-       // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            {
+              onSuccess: (data) => {
+                console.log(data);
+                if (data.socialToken) {
+                  updateFirebaseToken(data.socialToken);
+                  toast.success("Account created successfully");
+                  navigate(`/add_phone`, { replace: true });
+                  return;
+                }
+                setItemToLocalStorage(USER_DATA, data.user);
+                setItemToLocalStorage(TOKEN, data.token);
+                updateToken(data.token);
+                toast.success(data.message);
+                updateUser(data.user);
+                navigate(`/home`);
+              },
+            }
+          )
+        );
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       console.log(error);
     }
@@ -116,26 +161,28 @@ export default function Signup() {
       const token = credential.accessToken;
       const user = result.user;
       console.log(user, token);
-      auth?.currentUser?.getIdToken(/* forceRefresh */ true).then((idToken) =>
-        socialAuth(
-          {
-            token: idToken,
-          },
-          {
-            onSuccess: (data) => {
-              console.log(data);
-              setItemToLocalStorage(USER_DATA, data.user);
-              setItemToLocalStorage(TOKEN, data.token);
-              updateToken(data.token);
-              updateUser(data.user);
-              if (!data.user.phone) {
-                navigate(`/verify_otp/`);
-              }
-              navigate(`/home`);
+      auth?.currentUser
+        ?.getIdToken(/* forceRefresh */ true)
+        .then((idToken) =>
+          socialAuth(
+            {
+              token: idToken,
             },
-          }
-        )
-      );
+            {
+              onSuccess: (data) => {
+                console.log(data);
+                setItemToLocalStorage(USER_DATA, data.user);
+                setItemToLocalStorage(TOKEN, data.token);
+                updateToken(data.token);
+                updateUser(data.user);
+                if (!data.user.phone) {
+                  navigate(`/verify_otp/`);
+                }
+                navigate(`/home`);
+              },
+            }
+          )
+        );
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       console.log(error);
@@ -154,28 +201,30 @@ export default function Signup() {
       const token = credential.accessToken;
       const user = result.user;
       console.log(user, token);
-      auth?.currentUser?.getIdToken(/* forceRefresh */ true).then((idToken) =>
-        socialAuth(
-          {
-            token: idToken,
-          },
-          {
-            onSuccess: (data) => {
-              console.log(data.user);
-              setItemToLocalStorage(USER_DATA, data.user);
-              setItemToLocalStorage(TOKEN, data.token);
-              updateToken(data.token);
-              updateUser(data.user);
-              if (!data.user.phone) {
-                navigate(`/add_phone`);
-                return;
-              }
-              navigate(`/home`);
+      auth?.currentUser
+        ?.getIdToken(/* forceRefresh */ true)
+        .then((idToken) =>
+          socialAuth(
+            {
+              token: idToken,
             },
-          }
-        )
-      );
-       // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            {
+              onSuccess: (data) => {
+                console.log(data.user);
+                setItemToLocalStorage(USER_DATA, data.user);
+                setItemToLocalStorage(TOKEN, data.token);
+                updateToken(data.token);
+                updateUser(data.user);
+                if (!data.user.phone) {
+                  navigate(`/add_phone`);
+                  return;
+                }
+                navigate(`/home`);
+              },
+            }
+          )
+        );
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       console.log(error);
     }
@@ -226,10 +275,10 @@ export default function Signup() {
             <Button
               type="submit"
               className="w-full bg-primary"
-              disabled={isPending}
+              disabled={loading}
               onClick={form.handleSubmit(onSubmit)}
             >
-              {isPending ? "Sending OTP..." : "Continue"}
+              {loading ? "Sending OTP..." : "Continue"}
             </Button>
 
             <div className="w-full text-center text-sm text-gray-500 flex gap-1 justify-between items-center">
@@ -299,6 +348,7 @@ export default function Signup() {
           </CardFooter>
         </Card>
       </div>
+      <div id="recaptcha-container"></div>
     </div>
   );
 }

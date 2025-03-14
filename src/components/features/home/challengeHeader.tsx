@@ -11,7 +11,7 @@ const ChallengeHeader = () => {
   return (
     <div className="w-full max-w-4xl">
       {/* Challenge Creation Bar */}
-      <div className="flex items-center justify-between bg-white rounded-lg p-3 drop-shadow-sm mb-6">
+      <div className="flex items-center justify-between bg-white rounded-lg p-3 mb-6">
         <div className="flex items-center flex-1 mr-4">
           <Avatar className="h-12 w-12 mr-4">
           <AvatarImage src={user.profile_picture||""} alt="user avatar" />
