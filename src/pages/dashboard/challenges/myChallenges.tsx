@@ -20,6 +20,7 @@ import { Label } from "@/components/ui/label";
 import { TextArea } from "@/components/ui/text-area";
 import TimeLimitSelector from "@/components/ui/time-limit";
 import { useState } from "react";
+import RichTextEditor from "@/components/features/dashboard/richtexteditor";
 
 export default function MyChallenges() {
   const [activeType, setActiveType] = useState(0);
@@ -32,7 +33,7 @@ export default function MyChallenges() {
         <SearchHeader page="Edit Challenge" />
         <div className="flex flex-col gap-2 items-start">
           <h3 className="text-[#343538] leading-[40px] text-[32px] font-bold tracking-[-0.64px]">
-            Edit challenge
+            Create New challenge
           </h3>
           <p className="text-xs leading-[14px] text-[#989CA7]">
             Write your comment and interact with others about the challenge.
@@ -94,18 +95,16 @@ export default function MyChallenges() {
               </div>
             </div>
           </div>
-
+            
           <div className="flex flex-col gap-[10px]">
             <h6 className="text-base font-[500] leading-6 self-start">
               Challenge details/contents
             </h6>
-            {/* <div className="flex flex-col gap-4 items-center bg-[#F8F8F8] w-full p-[20px]">
-            
-            </div> */}
+            <RichTextEditor />
           </div>
 
           <div className="flex flex-col gap-[10px]">
-            <div className="flex gap-4 items-center w-full p-[20px] items-start">
+            <div className="flex gap-4  w-full p-[20px] items-start">
               <div className="w-[25%] flex flex-col items-start gap-2">
                 <h6 className="text-base font-[500] leading-6 self-start">
                   Reward

@@ -8,8 +8,8 @@ import { TOKEN, USER_DATA } from "@/constants/keys";
 import { getItemFromLocalStorage } from "@/utils/localStorage";
 import { useEffect } from "react";
 import { authStore } from "./store/authstore";
-import MyChallenges from "./pages/dashboard/challenges/myChallenges";
 import NewChallenges from "./pages/dashboard/challenges/newChallenge";
+import MyChallenges from "./pages/dashboard/challenges/mychallenges";
 import EditScheduledChallenge from "./pages/dashboard/challenges/editScheduledChallenge";
 import AllChallenges from "./pages/dashboard/challenges/challenges";
 
