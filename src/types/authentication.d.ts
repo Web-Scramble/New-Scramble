@@ -15,6 +15,7 @@
  export type SocialAuthPayload ={
     token: string;
 }
+
  export type OtpAuthPayload ={
     idToken: string;
 }
@@ -28,6 +29,7 @@
     token: string;
     user: User;
     message:string;
+
     socialToken:string;
     registrationData:Record<string,string>	
   }

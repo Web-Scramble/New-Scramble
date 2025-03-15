@@ -14,6 +14,7 @@ import {
 import Header from "@/components/features/auth/header";
 import { signupSchema } from "@/schema/auth_schemas";
 import Sidebar from "@/components/features/auth/auth-sidebar";
+
 import { useState, useEffect } from "react";
 import { CountrySelect } from "@/components/features/auth/country_select";
 // import { useSendOtp } from "@/hooks/auth/useSendOtp";
@@ -21,6 +22,7 @@ import {
   signInWithPopup,
   GoogleAuthProvider,
   FacebookAuthProvider,
+
   TwitterAuthProvider,
   signInWithPhoneNumber,
   RecaptchaVerifier,
@@ -33,6 +35,7 @@ import { setItemToLocalStorage } from "@/utils/localStorage";
 import { TOKEN, USER_DATA } from "@/constants/keys";
 import { toast } from "sonner";
 
+
 type SignupFormValues = {
   phone: string;
 };
@@ -40,6 +43,7 @@ type SignupFormValues = {
 export default function Signup() {
   const navigate = useNavigate();
   const [selectedDialCode, setSelectedDialCode] = useState("+1");
+
   const [loading, setLoading] = useState(false)
   const { updateToken, updateUser, updateFirebaseToken } = authStore();
 
@@ -117,6 +121,7 @@ export default function Signup() {
       const token = credential.accessToken;
       const user = result.user;
       console.log(user, token);
+
       auth?.currentUser
         ?.getIdToken(/* forceRefresh */ true)
         .then((idToken) =>
@@ -161,6 +166,7 @@ export default function Signup() {
       const token = credential.accessToken;
       const user = result.user;
       console.log(user, token);
+
       auth?.currentUser
         ?.getIdToken(/* forceRefresh */ true)
         .then((idToken) =>
@@ -201,6 +207,7 @@ export default function Signup() {
       const token = credential.accessToken;
       const user = result.user;
       console.log(user, token);
+
       auth?.currentUser
         ?.getIdToken(/* forceRefresh */ true)
         .then((idToken) =>

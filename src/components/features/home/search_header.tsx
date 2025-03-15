@@ -6,14 +6,21 @@ import { authStore } from "@/store/authstore";
 import { useLocation } from "react-router";
 
 
-export default function SearchHeader() {
+type SearchheaderProps ={
+  page: string
+}
+
+export default function SearchHeader({page}:SearchheaderProps) {
     const {user} = authStore()
     const {pathname} = useLocation()
+
+
   
   return (
     <header className="flex w-full items-center justify-between border-b border-gray-200 p-4 ">
       <div className="flex flex-col">
-        <h2 className="text-2xl font-semibold text-black font-grotesk">
+        <h2 className="text-[32px] font-semibold text-black font-grotesk">
+
           Welcome, {user.username}
         </h2>
         <nav className="mt-1 text-sm text-gray-400 text-left">

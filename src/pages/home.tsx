@@ -56,7 +56,8 @@ return ()=>{
     <main className="flex h-full gap-4 w-full bg-[#F9F9FA]">
       <Sidebar />
       <section className="flex flex-col gap-2 ml-68">
-        <SearchHeader />
+        <SearchHeader  page="Home"/>
+
         <section className="flex gap-4">
           <section className="w-full">
         <ChallengeHeader/>

@@ -142,6 +142,7 @@ export default function VerifyOtp() {
     <div className="flex flex-col md:flex-row h-full lg:h-screen bg-primary-background p-4 rounded-xl gap-4">
       <Sidebar />
       {success ? (
+
         <div className="flex w-full flex-col items-center justify-center p-2 md:p-8 bg-white rounded-xl">
           <Card className="w-full max-w-sm border-none shadow-none text-center">
             <CardContent className="flex flex-col items-center space-y-6">
