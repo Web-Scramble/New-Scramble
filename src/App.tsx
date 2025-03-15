@@ -12,6 +12,7 @@ import NewChallenges from "./pages/dashboard/challenges/newChallenge";
 import MyChallenges from "./pages/dashboard/challenges/mychallenges";
 import EditScheduledChallenge from "./pages/dashboard/challenges/editScheduledChallenge";
 import AllChallenges from "./pages/dashboard/challenges/challenges";
+import LeaderBoard from "./pages/dashboard/challenges/leaderboard";
 
 function App() {
   const { token, reloading, setReloading, updateToken, updateUser } =
@@ -75,8 +76,12 @@ function App() {
         />
         <Route path="/mychallenges" element={<MyChallenges />} />
         <Route path="/challenges/new" element={<NewChallenges />} />
-        <Route path="/challenges/schedule/edit" element={<EditScheduledChallenge />} />
+        <Route
+          path="/challenges/schedule/edit"
+          element={<EditScheduledChallenge />}
+        />
         <Route path="/challenges/all" element={<AllChallenges />} />
+        <Route path="/challenges/leaderboard" element={<LeaderBoard />} />
 
         <Route
           path="/wallet"
